@@ -3,9 +3,10 @@ import Subscriptions from './pages/Subscriptions';
 import Browse from './pages/Browse';
 import Header from './components/Header';
 import { Routes, Route } from 'react-router-dom';
-import { Divider } from '@mui/material';
-import Container from '@mui/material/Container';
 import './App.css';
+import Item from './components/Item'
+import { Container } from '@mui/system';
+import { itemMock, sitesMock } from './Mocks';
 
 function App() {
   return (
