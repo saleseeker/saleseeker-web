@@ -13,9 +13,11 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import { Link } from 'react-router-dom';
+import { Container } from '@mui/material';
 
 const drawerWidth = 240;
-const navItems = ['Home', 'Browse', 'Profile'];
+const navItems = ['Browse', 'Subscriptions'];
 
 function Header(props) {
   const { window } = props;
@@ -35,7 +37,9 @@ function Header(props) {
         {navItems.map((item) => (
           <ListItem key={item} disablePadding>
             <ListItemButton sx={{ textAlign: 'center' }}>
-              <ListItemText primary={item} />
+              <Link to={`/${item}`}>
+               <ListItemText primary={item} />
+              </Link>
             </ListItemButton>
           </ListItem>
         ))}
@@ -46,7 +50,7 @@ function Header(props) {
   const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Container>
       <AppBar component="nav">
         <Toolbar>
           <IconButton
@@ -61,14 +65,16 @@ function Header(props) {
           <Typography
             variant="h6"
             component="div"
-            sx={{ flexGrow: 1, display: { sm: 'block' }, justifyContent: 'left' }}
+            sx={{ display: { sm: 'block' }, justifyContent: 'left' }}
           >
             SaleSeeker
           </Typography>
-          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+          <Box sx={{ display: { xs: 'none', sm: 'block' }, marginLeft: '15px' }}>
             {navItems.map((item) => (
               <Button key={item} sx={{ color: '#fff' }}>
-                {item}
+                <Link to={`/${item}`}>
+                  {item}
+                </Link>
               </Button>
             ))}
           </Box>
@@ -91,15 +97,11 @@ function Header(props) {
           {drawer}
         </Drawer>
       </Box>
-    </Box>
+    </Container>
   );
 }
 
 Header.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
   window: PropTypes.func,
 };
 
