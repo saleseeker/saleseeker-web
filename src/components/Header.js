@@ -17,7 +17,7 @@ import { Link } from 'react-router-dom';
 import { Container } from '@mui/material';
 
 const drawerWidth = 240;
-const navItems = ['Browse', 'Subscriptions'];
+const navItems = ['Home', 'Browse', 'Subscriptions'];
 
 function Header(props) {
   const { window } = props;

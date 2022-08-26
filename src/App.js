@@ -15,8 +15,8 @@ function App() {
       <Container className="AppContent">
         <Routes >
             <Route exact path="*" element={ <Home /> }/>
-            <Route exact path="/subscriptions" element={ <Subscriptions /> }/>
             <Route exact path="/browse" element={ <Browse /> }/>
+            <Route exact path="/subscriptions" element={ <Subscriptions /> }/>            
         </Routes>
       </Container>
     </Container>
