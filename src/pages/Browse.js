@@ -14,7 +14,7 @@ export default function Browse() {
     const [calledAPI, setCalledAPI] = useState(false);
 
     useEffect(() => {
-        //TODO: Add API Call to Fetch Data
+        //TODO: Add API Call to Fetch Data from Backend
     });
 
     const filterItems = () => {
