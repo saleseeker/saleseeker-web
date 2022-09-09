@@ -1,0 +1,1 @@
+export const onSale = (price:number, avePrice:number) => price / avePrice < 0.97
