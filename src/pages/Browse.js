@@ -6,19 +6,14 @@ import { itemMocks, sitesMock } from './../Mocks.js';
 
 export default function Browse() {
 
-    const [catalogueItems, setCatalogueItems] = useState([]);
-    const [filteredItems, setFilteredItems] = useState([]);
+    const [catalogueItems, setCatalogueItems] = useState(itemMocks);
+    const [filteredItems, setFilteredItems] = useState(itemMocks);
     const [searchQuery, setSearchQuery] = useState("");
     const [paginationIndex, setPaginationIndex] = useState(1);
     const [filter, setFilter] = useState("alphabetical");
+    const [calledAPI, setCalledAPI] = useState(false);
 
     useEffect(() => {
-        //Make API call here to fetch data
-        if (catalogueItems.length == 0){
-            setCatalogueItems(itemMocks);
-            setSearchQuery("");
-            setFilteredItems(catalogueItems);
-        }
     });
 
     const filterItems = () => {
@@ -26,11 +21,12 @@ export default function Browse() {
             setFilteredItems(catalogueItems);
             return;
         }
-        setFilteredItems(catalogueItems.filter(item => { return item.name.toLowerCase().includes(searchQuery.toLowerCase()); }));
+        const filteredArray = catalogueItems.filter(item => { return item.name.toLowerCase().includes(searchQuery.toLowerCase()); });
+        setFilteredItems(filteredArray);
     }
 
     const handleSearchQueryChange = (e) => {
-        setSearchQuery(e.target.textContent);
+        setSearchQuery(e.target.value);
     }
 
     const handlePageChange = (event, value) => {
