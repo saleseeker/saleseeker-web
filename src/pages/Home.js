@@ -1,8 +1,8 @@
 import React from 'react';
 import { Typography } from "@mui/material";
 import { Container, Box } from '@mui/system';
-import Item from '../components/Item';
-import { itemMock, sitesMock } from "./../Mocks";
+import ShopPrices from '../components/ShopPrices';
+import { itemMocks, sitesMock } from "./../Mocks";
 
 export default function Home() {
     return (
@@ -11,6 +11,7 @@ export default function Home() {
                 <Typography>Hero</Typography>
             </Box>
             <Typography variant="h3">Home</Typography>
+            <ShopPrices item={itemMocks[0]} sites={sitesMock} />
         </Container>
     );
 }
