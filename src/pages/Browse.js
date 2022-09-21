@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Button, Pagination, Typography, TextField, Select, MenuItem } from "@mui/material";
 import { Container, Box } from '@mui/system';
 import Item from '../components/Item';
-import { itemMocks, sitesMock } from './../Mocks.js';
+import { itemMocks, sitesMock, subscriptionMock, defaultSubscriptionValueMock } from './../Mocks.js';
+import { getDefaultSubscriptionValues } from '../gateways/SettingsGateway';
 
 export default function Browse() {
 
@@ -12,9 +13,11 @@ export default function Browse() {
     const [paginationIndex, setPaginationIndex] = useState(1);
     const [filter, setFilter] = useState("alphabetical");
     const [calledAPI, setCalledAPI] = useState(false);
+    const [defaultSubscriptionValues, setDefaultSubscriptionValues] = useState(null);
 
     useEffect(() => {
-    });
+        setDefaultSubscriptionValues(getDefaultSubscriptionValues());
+    },[]);
 
     const filterItems = () => {
         if (searchQuery == "" || searchQuery.length == 0){
@@ -107,7 +110,7 @@ export default function Browse() {
                             p: 0.5
                         }} 
                         key={item.name}>
-                        <Item item={item} sites={sitesMock}/>
+                        <Item item={item} sites={sitesMock} subscriptions={subscriptionMock} defaultSubscriptionValues={defaultSubscriptionValues}/>
                     </Box>
                     )
                 })}

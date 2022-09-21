@@ -1,9 +1,11 @@
-import React, { Fragment, FunctionComponent } from 'react'
+import React, { Fragment } from 'react'
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { Button, Typography, Link } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import minBy from 'lodash.minby';
-import {formatCurrency} from '../common/Formatter'
+import { formatCurrency } from '../common/Formatter'
+import SubscribeButton from './SubscribeButton';
+import {Link} from 'react-router-dom'
 
 function renderPrice(item, sites, minSiteItem) {
   const onSale = minSiteItem.price / item.avePrice < 0.97
@@ -16,6 +18,9 @@ function renderPrice(item, sites, minSiteItem) {
       </Box>
       <Box sx={{ display: { display: 'flex' } }}>
         <Typography sx={{ fontSize: '12px' }}>on sale at {sites[minSiteItem.siteID].name}</Typography>
+        {item.siteItems.length > 1 && 
+        <Fragment><Typography sx={{ fontSize: '12px' }}>&nbsp;and&nbsp;</Typography>
+        <Link to={`/PriceCheck/${item.id}`} style={{fontSize:'12px'}}>{item.siteItems.length - 1} more</Link></Fragment>}
       </Box>
     </Fragment>) :
     (<Fragment>
@@ -26,22 +31,22 @@ function renderPrice(item, sites, minSiteItem) {
     </Fragment>);
 }
 
-const Item = ({ item, sites }) => {
+const Item = ({ item, sites, subscriptions, defaultSubscriptionValues }) => {
   const minSiteItem = minBy(item.siteItems, si => si.price);
 
   return (
     <Box sx={{ height: 320, border: '1px solid grey', borderRadius: 2 }}>
-      <Container>
+      <Box sx={{padding:'0px 12px'}}>
         <Box sx={{ textAlign: 'center' }}>
           <img src={item.imageUrl} alt={item.name} style={{ maxHeight: "200px" }} />
         </Box>
         <Typography sx={{ fontSize: '18px' }}>{item.name}</Typography>
         {renderPrice(item, sites, minSiteItem)}
         <Box sx={{ display: { display: 'flex', marginTop: '5px' } }}>
-          <Button sx={{ backgroundColor: '#D9D9D9' }} href={minSiteItem?.url}><img src={require('../images/cart_shopping_icon.png')} alt="Buy" style={{ width: '20px' }} /></Button>
-          <Button sx={{ backgroundColor: '#D9D9D9', width: '100%', marginLeft: '10px', color: 'black', textTransform: 'none', fontWeight: 'bold' }}>{item.subscribedPercentage ? 'Unsubscribe' : 'Subscribe'}</Button>
+          <Button sx={{ backgroundColor: '#D9D9D9', minWidth: '50px' }} href={minSiteItem?.url}><img src={require('../images/cart_shopping_icon.png')} alt="Buy" style={{ width: '20px' }} /></Button>
+          <SubscribeButton item={item} sites={sites} subscriptions={subscriptions} defaultSubscriptionValues={defaultSubscriptionValues} />
         </Box>
-      </Container>
+      </Box>
     </Box>
   );
 };

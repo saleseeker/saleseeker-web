@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Container from '@mui/material/Container';
 import { Button, Typography, Link, TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import orderBy from 'lodash.orderby';
 import map from 'lodash.map';
+import find from 'lodash.find';
 import { formatCurrency } from '../common/Formatter'
 import { onSale } from '../common/Helper';
+import { itemMocks, sitesMock } from '../Mocks';
+import {useParams} from 'react-router-dom'
 
 function getRows(item, sites) {
     const orderedSiteItems = orderBy(item.siteItems,['price'], ['asc']);
@@ -21,8 +24,20 @@ function getRows(item, sites) {
     });
 }
 
-const ShopPrices = ({ item, sites }) => {
+export default function PriceCheck() {
+    const params = useParams();
+    const [item, setItem] = useState(null);
+    const [sites, setSites] = useState(null);
+
+    useEffect(() => {
+        const itemMock = find(itemMocks, i => i.id == params.itemID);
+        setItem(itemMock);
+        setSites(sitesMock);
+      });
+    
+
     return (
+        item && sites &&
         <Container>
             <Typography variant="h4">
                 Price Check
@@ -45,5 +60,3 @@ const ShopPrices = ({ item, sites }) => {
         </Container>
     );
 };
-
-export default ShopPrices;
