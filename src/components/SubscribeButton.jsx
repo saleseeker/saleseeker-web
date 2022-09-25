@@ -1,28 +1,29 @@
 import React, { Fragment, useState, useEffect } from 'react'
 import { Box, Button, ButtonGroup, Dialog, DialogContentText, DialogContent, DialogTitle } from '@mui/material';
-import find from 'lodash.find'
 import DefaultSubscribeValues from './DefaultSubscribeValues';
 import { Link } from 'react-router-dom'
-import { saveDefaultSubscriptionValues } from '../gateways/SettingsGateway';
+import SettingGateway from '../gateways/SettingGateway';
+import SaleSeekerGateway from '../gateways/SaleSeekerGateway';
 
 const SubscribeButton = ({ item, sites, subscriptions, defaultSubscriptionValues }) => {
 
     const [open, setOpen] = useState(false);
     const [subscriptionValues, setSubscriptionValues] = useState(null);
-    
+
     useEffect(() => {
         setSubscriptionValues(defaultSubscriptionValues);
     }, [defaultSubscriptionValues]);
 
     const handleClick = (subscription) => {
-        console.log(subscriptions)
         if (!subscription && defaultSubscriptionValues.emailAddress == '')
             setOpen(true);
+        else
+            SaleSeekerGateway.SaveSubscription(defaultSubscriptionValues.emailAddress, item.id, defaultSubscriptionValues.alertThreshold, defaultSubscriptionValues.siteIDs);
     };
 
     const handleSubscribe = (e) => {
-        console.log(subscriptionValues)
-        saveDefaultSubscriptionValues(subscriptionValues);
+        SettingGateway.SaveDefaultSubscriptionValues(subscriptionValues);
+        SaleSeekerGateway.SaveSubscription(subscriptionValues.emailAddress, item.id, subscriptionValues.alertThreshold, subscriptionValues.siteIDs);
         e.preventDefault();
         setOpen(false);
     };
@@ -31,8 +32,8 @@ const SubscribeButton = ({ item, sites, subscriptions, defaultSubscriptionValues
         setOpen(false);
     };
 
-    const subscription = find(subscriptions, s => s.itemID == item.id);
-    
+    const subscription = subscriptions.find(s => s.itemID == item.id);
+
     return (
         <Fragment>
             <ButtonGroup variant='text' sx={{ backgroundColor: '#D9D9D9', width: '100%', marginLeft: '5px', minWidth: '175px' }}>
@@ -51,9 +52,9 @@ const SubscribeButton = ({ item, sites, subscriptions, defaultSubscriptionValues
                         </DialogContentText>
                         {subscriptionValues && <DefaultSubscribeValues sites={sites} defaultSubscriptionValues={subscriptionValues} setDefaultSubscriptionValues={setSubscriptionValues} />}
                         <br />
-                        <Box sx={{float:'right'}}>
-                        <Button type="submit">Subscribe</Button>
-                            <Button onClick={handleClose}>Cancel</Button>                        
+                        <Box sx={{ float: 'right' }}>
+                            <Button type="submit">Subscribe</Button>
+                            <Button onClick={handleClose}>Cancel</Button>
                         </Box>
                     </form>
                 </DialogContent>

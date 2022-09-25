@@ -2,21 +2,29 @@ import React, { useState, useEffect } from 'react';
 import { Button, Pagination, Typography, TextField, Select, MenuItem } from "@mui/material";
 import { Container, Box } from '@mui/system';
 import Item from '../components/Item';
-import { itemMocks, sitesMock, subscriptionMock, defaultSubscriptionValueMock } from './../Mocks.js';
-import { getDefaultSubscriptionValues } from '../gateways/SettingsGateway';
+import SettingGateway from '../gateways/SettingGateway';
+import SaleSeekerGateway from '../gateways/SaleSeekerGateway';
 
 export default function Browse() {
 
-    const [catalogueItems, setCatalogueItems] = useState(itemMocks);
-    const [filteredItems, setFilteredItems] = useState(itemMocks);
+    const [catalogueItems, setCatalogueItems] = useState(null);
+    const [filteredItems, setFilteredItems] = useState(null);
     const [searchQuery, setSearchQuery] = useState("");
     const [paginationIndex, setPaginationIndex] = useState(1);
     const [filter, setFilter] = useState("alphabetical");
     const [calledAPI, setCalledAPI] = useState(false);
     const [defaultSubscriptionValues, setDefaultSubscriptionValues] = useState(null);
+    const [sites, setSites] = useState(null);
+    const [subscriptions, setSubscriptions] = useState(null);
 
     useEffect(() => {
-        setDefaultSubscriptionValues(getDefaultSubscriptionValues());
+        setDefaultSubscriptionValues(SettingGateway.GetDefaultSubscriptionValues());
+
+        (async () => {
+            setSites(await SaleSeekerGateway.GetSites());
+            setFilteredItems(await SaleSeekerGateway.GetItems());
+            setSubscriptions(await SaleSeekerGateway.GetSubscriptions());
+          })();
     },[]);
 
     const filterItems = () => {
@@ -103,14 +111,14 @@ export default function Browse() {
                     marginTop: 3
                 }} 
                 >
-                {filteredItems.map((item,index)=>{
+                {filteredItems?.map((item,index)=>{
                     return (
                     <Box 
                         sx={{
                             p: 0.5
                         }} 
                         key={item.name}>
-                        <Item item={item} sites={sitesMock} subscriptions={subscriptionMock} defaultSubscriptionValues={defaultSubscriptionValues}/>
+                        { sites && <Item item={item} sites={sites} subscriptions={subscriptions} defaultSubscriptionValues={defaultSubscriptionValues}/>}
                     </Box>
                     )
                 })}

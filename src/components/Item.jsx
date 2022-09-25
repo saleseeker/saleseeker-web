@@ -7,9 +7,9 @@ import { formatCurrency } from '../common/Formatter'
 import SubscribeButton from './SubscribeButton';
 import {Link} from 'react-router-dom'
 
-function renderPrice(item, sites, minSiteItem) {
+const renderPrice = (item, sites, minSiteItem) => {
   const onSale = minSiteItem.price / item.avePrice < 0.97
-
+  var site = sites.find(s => s.id == minSiteItem.siteID);
   return onSale ?
     (<Fragment>
       <Box sx={{ display: { display: 'flex' } }}>
@@ -17,7 +17,7 @@ function renderPrice(item, sites, minSiteItem) {
         <Typography sx={{ fontSize: '14px', textDecoration: 'line-through', marginLeft: '10px' }}>{formatCurrency(item.avePrice)}</Typography>
       </Box>
       <Box sx={{ display: { display: 'flex' } }}>
-        <Typography sx={{ fontSize: '12px' }}>on sale at {sites[minSiteItem.siteID].name}</Typography>
+        <Typography sx={{ fontSize: '12px' }}>on sale at {site.name}</Typography>
         {item.siteItems.length > 1 && 
         <Fragment><Typography sx={{ fontSize: '12px' }}>&nbsp;and&nbsp;</Typography>
         <Link to={`/PriceCheck/${item.id}`} style={{fontSize:'12px'}}>{item.siteItems.length - 1} more</Link></Fragment>}
@@ -26,7 +26,7 @@ function renderPrice(item, sites, minSiteItem) {
     (<Fragment>
       <Typography sx={{ fontSize: '14px' }}>{formatCurrency(minSiteItem.price)}</Typography>
       <Box sx={{ display: { display: 'flex' } }}>
-        <Typography sx={{ fontSize: '12px' }}>at {sites[minSiteItem.siteID].name}</Typography>
+        <Typography sx={{ fontSize: '12px' }}>at {site.name}</Typography>
       </Box>
     </Fragment>);
 }

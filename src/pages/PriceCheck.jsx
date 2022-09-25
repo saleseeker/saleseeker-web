@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import Container from '@mui/material/Container';
 import { Button, Typography, Link, TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
-import orderBy from 'lodash.orderby';
-import map from 'lodash.map';
-import find from 'lodash.find';
 import { formatCurrency } from '../common/Formatter'
 import { onSale } from '../common/Helper';
-import { itemMocks, sitesMock } from '../Mocks';
 import {useParams} from 'react-router-dom'
+import SaleSeekerGateway from '../gateways/SaleSeekerGateway';
 
-function getRows(item, sites) {
-    const orderedSiteItems = orderBy(item.siteItems,['price'], ['asc']);
+const getRows = (item, sites) => {
+    const orderedSiteItems = item.siteItems.sort(s => s.price);
 
-    return map(orderedSiteItems, siteItem => {
+    return orderedSiteItems.map(siteItem => {
+        var site = sites.find(s => s.id == siteItem.siteID);
         return (
             <TableRow key={siteItem.siteID}>
-                <TableCell><Link href={sites[siteItem.siteID].url}><img alt={sites[siteItem.siteID].name} src={sites[siteItem.siteID].logo} style={{maxHeight:20}}></img></Link></TableCell>
+                <TableCell><Link href={site.url}><img alt={site.name} src={site.logo} style={{maxHeight:20}}></img></Link></TableCell>
                 <TableCell align='right'><Typography>{formatCurrency(siteItem.avePrice)}</Typography></TableCell>
                 <TableCell align='right'><Typography sx={{ color: onSale(siteItem.price, siteItem.avePrice) ? 'red' : '' }}>{formatCurrency(siteItem.price)}</Typography></TableCell>
                 <TableCell align='right'><Button sx={{ backgroundColor: '#D9D9D9' }} href={siteItem.url}><img src={require('../images/cart_shopping_icon.png')} alt="Buy" style={{ width: '20px' }} /></Button></TableCell>
@@ -24,15 +22,17 @@ function getRows(item, sites) {
     });
 }
 
-export default function PriceCheck() {
+const PriceCheck = () => {
     const params = useParams();
     const [item, setItem] = useState(null);
     const [sites, setSites] = useState(null);
 
-    useEffect(() => {
-        const itemMock = find(itemMocks, i => i.id == params.itemID);
-        setItem(itemMock);
-        setSites(sitesMock);
+    useEffect(() => {       
+        (async () => {
+            setSites(await SaleSeekerGateway.GetSites());
+
+            setItem((await SaleSeekerGateway.GetItems()).find(i => i.id == params.itemID));
+          })();
       });
     
 
@@ -60,3 +60,5 @@ export default function PriceCheck() {
         </Container>
     );
 };
+
+export default PriceCheck;

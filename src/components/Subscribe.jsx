@@ -1,35 +1,14 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { Button, Typography, Divider, Select, MenuItem, Switch, Grid, Checkbox, ListItemText } from '@mui/material';
-import map from 'lodash.map';
-import find from 'lodash.find'
-import { formatCurrency } from '../common/Formatter'
-
-function renderPrice(item, sites, minSiteItem) {
-    const onSale = minSiteItem.price / item.avePrice < 0.97
-
-    return onSale ?
-        (<Fragment>
-            <Box sx={{ display: { display: 'flex' } }}>
-                <Typography sx={{ fontSize: '14px', color: 'red' }}>{formatCurrency(minSiteItem.price)}</Typography>
-                <Typography sx={{ fontSize: '14px', textDecoration: 'line-through', marginLeft: '10px' }}>{formatCurrency(item.avePrice)}</Typography>
-            </Box>
-            <Box sx={{ display: { display: 'flex' } }}>
-                <Typography sx={{ fontSize: '12px' }}>on sale at {sites[minSiteItem.siteID].name}</Typography>
-            </Box>
-        </Fragment>) :
-        (<Fragment>
-            <Typography sx={{ fontSize: '14px' }}>{formatCurrency(minSiteItem.price)}</Typography>
-            <Box sx={{ display: { display: 'flex' } }}>
-                <Typography sx={{ fontSize: '12px' }}>at {sites[minSiteItem.siteID].name}</Typography>
-            </Box>
-        </Fragment>);
-}
+import { Typography, Select, MenuItem, Switch, Grid, Checkbox } from '@mui/material';
 
 const Subscribe = ({ item, sites, subscriptions }) => {
-    const subscription = find(subscriptions, s => s.itemID == item.id);
-    const siteIDs = map(sites, s => s.id);
+    
+    const getSite = (id) => sites.find(s => s.id == id);
+    const subscription = subscriptions.find(s => s.itemID == item.id);
+    const siteIDs = sites.map(s => s.id);
+
     return (
         <Box sx={{ border: '1px solid grey', borderRadius: 2 }}>
             <Container sx={{ width: '100%' }}>
@@ -71,16 +50,18 @@ const Subscribe = ({ item, sites, subscriptions }) => {
                                             label="Targetted Stores"
                                             multiple
                                             size="small"
-                                            renderValue={(selected) => selected.length > 1 ? `${sites[selected[0]].name} and ${selected.length - 1} more` : sites[selected[0]].name}
+                                            renderValue={(selected) => selected.length > 1 ? `${getSite(selected[0]).name} and ${selected.length - 1} more` : getSite(selected[0]).name}
                                             sx={{ marginTop: '5px' }}
                                         >
                                             {
-                                                map(item.siteItems, siteItem => (
+                                                item.siteItems.map(siteItem => {
+                                                    var site = getSite(siteItem.siteID);
+                                                    return (
                                                     <MenuItem key={siteItem.siteID} value={siteItem.siteID}>
                                                         <Checkbox checked={subscription == null || subscription.sites.indexOf(siteItem.siteID) > -1}/>
-                                                        <img alt={sites[siteItem.siteID].name} src={sites[siteItem.siteID].logo} style={{ maxHeight: 20 }}></img>
+                                                        <img alt={site.name} src={site.logo} style={{ maxHeight: 20 }}></img>
                                                     </MenuItem>
-                                                ))
+                                                )})
                                             }
                                         </Select>
                                     </Box>

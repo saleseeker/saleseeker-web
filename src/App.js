@@ -5,9 +5,7 @@ import Browse from './pages/Browse';
 import Header from './components/Header';
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
-import Item from './components/Item'
 import { Container } from '@mui/system';
-import { itemMock, sitesMock } from './Mocks';
 import Settings from './pages/Settings';
 
 function App() {

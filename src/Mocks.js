@@ -1,17 +1,17 @@
-export const sitesMock = {
-    1 : {
+export const sitesMock = [
+    {
         name: 'Takealot',
         id: 1,
         logo: 'https://shopfront.takealot.com/static/media/src/images/logo.svg-f6ccb489b85bbddf97d6.svg',
         url: 'https://www.takealot.com'
     },
-    2 : {
+    {
         name: 'Pick n Pay',
         id: 2,
         logo: 'https://cdn-prd-02.pnp.co.za/sys-master/images/h26/h64/10206546133022/pick-n-pay-header2.png',
         url: 'https://www.pnp.co.za'
       }    
-}
+    ]
 
 export const itemMocks = [    
     {
@@ -100,9 +100,3 @@ export const subscriptionMock = [
         sites:[1]        
     }
 ]
-
-export const defaultSubscriptionValueMock = {
-    emailAddress : '',
-    alertThreshold : '10',
-    sites : null
-}

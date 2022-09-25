@@ -1,34 +1,31 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { TextField, Typography, Stack, Select, MenuItem, Checkbox } from '@mui/material';
-import map from 'lodash.map';
 
 const DefaultSubscribeValues = ({ sites, defaultSubscriptionValues, setDefaultSubscriptionValues }) => {
 
-    const allSiteIDs = map(sites, s => s.id.toString());
+    const allSiteIDs = sites.map(s => s.id.toString());
 
-    function handleEmailChange(e)
-    {
-        setDefaultSubscriptionValues({...defaultSubscriptionValues, emailAddress: e.target.value});
+    const handleEmailChange = (e) => {
+        setDefaultSubscriptionValues({ ...defaultSubscriptionValues, emailAddress: e.target.value });
     }
 
-    function handleAlertThresholdChange(e)
-    {
-        setDefaultSubscriptionValues({...defaultSubscriptionValues, alertThreshold: e.target.value});
+    const handleAlertThresholdChange = (e) => {
+        setDefaultSubscriptionValues({ ...defaultSubscriptionValues, alertThreshold: e.target.value });
     }
 
-    function handleSitesChange(e)
-    {
-        setDefaultSubscriptionValues({...defaultSubscriptionValues, siteIDs: getSiteIDArray(e.target.value)});
+    const handleSitesChange = (e) => {
+        setDefaultSubscriptionValues({ ...defaultSubscriptionValues, siteIDs: getSiteIDArray(e.target.value) });
     }
 
-    function getSiteIDArray(sites)
-    {
+    const getSiteIDArray = (sites) => {
         if (sites === '')
-            return [];     
-        else if (sites.length == allSiteIDs.length) 
-            return null;  
+            return [];
+        else if (sites.length == allSiteIDs.length)
+            return null;
         return sites;
     }
+
+    const getSite = (id) => sites.find(s => s.id == id);
 
     return (
         <Stack spacing={2}>
@@ -76,10 +73,10 @@ const DefaultSubscribeValues = ({ sites, defaultSubscriptionValues, setDefaultSu
                     required
                     size="small"
                     onChange={handleSitesChange}
-                    renderValue={(selected) => selected.length > 1 ? `${sites[selected[0]].name} and ${selected.length - 1} more` : sites[selected[0]].name}
+                    renderValue={(selected) => selected.length > 1 ? `${getSite(selected[0]).name} and ${selected.length - 1} more` : getSite(selected[0]).name}
                 >
                     {
-                        map(sites, site => (
+                        sites.map(site => (
                             <MenuItem key={site.id} value={site.id.toString()}>
                                 <Checkbox key={site.id} checked={defaultSubscriptionValues.siteIDs == null || defaultSubscriptionValues.siteIDs.join(',').indexOf(site.id) > -1} />
                                 <img alt={site.name} src={site.logo} style={{ maxHeight: 20 }}></img>

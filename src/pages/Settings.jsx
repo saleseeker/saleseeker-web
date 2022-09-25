@@ -1,23 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import Container from '@mui/material/Container';
 import { Button, Typography, Box } from '@mui/material';
-import { sitesMock } from '../Mocks';
 import DefaultSubscribeValues from '../components/DefaultSubscribeValues';
-import { getDefaultSubscriptionValues, saveDefaultSubscriptionValues } from '../gateways/SettingsGateway';
+import SettingGateway from '../gateways/SettingGateway';
+import SaleSeekerGateway from '../gateways/SaleSeekerGateway';
 
-export default function Settings() {
+const Settings = () => {
 
     const [defaultSubscriptionValues, setDefaultSubscriptionValues] = useState(null);
     const [sites, setSites] = useState(null);
 
     useEffect(() => {
-        setDefaultSubscriptionValues(getDefaultSubscriptionValues());
-        setSites(sitesMock);
+        setDefaultSubscriptionValues(SettingGateway.GetDefaultSubscriptionValues());
+        (async () => {
+            setSites(await SaleSeekerGateway.GetSites());
+          })();
     },[]);
 
     const handleSave = () => {
         
-        saveDefaultSubscriptionValues(defaultSubscriptionValues);
+        SettingGateway.SaveDefaultSubscriptionValues(defaultSubscriptionValues);
     };
 
     return (
@@ -34,3 +36,5 @@ export default function Settings() {
         </Container>
     );
 };
+
+export default Settings;

@@ -1,6 +1,6 @@
-export const onSale = (price: number, avePrice: number) => price / avePrice < 0.97
+export const onSale = (price, avePrice) => price / avePrice < 0.97
 
-export const createCookie = (name: string, value: string, expiryDays: number) => {
+export const createCookie = (name, value, expiryDays) => {
     var expires = "";
     if (expiryDays) {
         var date = new Date();
@@ -13,7 +13,7 @@ export const createCookie = (name: string, value: string, expiryDays: number) =>
     document.cookie = name + "=" + (value || "") + expires + "; path=/";
 }
 
-export const getCookie = (name: string) => {
+export const getCookie = (name) => {
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');
     for (var i = 0; i < ca.length; i++) {
@@ -24,6 +24,6 @@ export const getCookie = (name: string) => {
     return null;
 }
 
-export const eraseCookie = (name: string) => {
+export const eraseCookie = (name) => {
     document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
