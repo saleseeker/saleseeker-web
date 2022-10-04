@@ -32,7 +32,7 @@ const SubscribeButton = ({ item, sites, subscriptions, defaultSubscriptionValues
         setOpen(false);
     };
 
-    const subscription = subscriptions.find(s => s.itemID == item.id);
+    const subscription = (subscriptions != null) ? subscriptions.find(s => s.itemID == item.id) : {};
 
     return (
         <Fragment>

@@ -7,6 +7,7 @@ import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import { Container } from '@mui/system';
 import Settings from './pages/Settings';
+import Footer from './components/Footer';
 
 function App() {
   return (

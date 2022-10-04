@@ -1,3 +1,48 @@
+.App {
+    width: 100vw;
+}
+
 .AppContent {
     margin-top: 100px;
+    width: 100vw;
+}
+
+#home-hero {
+    display: flex;
+    flex-wrap: wrap-reverse; 
+    align-items: center;
+    justify-content: space-between;
+    height: 35vh;
+}
+
+#header-logo {
+    width: 50px;
+    height: 50px;
+}
+
+.carousel {
+    display: flex;
+}
+
+.navbar-link {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.category-carousel-item {
+    flex: 1;
+    height: 100px;
+    justify-content: space-between;
+    background-color: aqua;
+    border-radius: 5px;
+    row-gap: 10px;
+}
+
+#footer-container {
+    display: flex;
+    flex-direction: row;
+    height: 5vh;
+    justify-content: center;
+    align-items: center;
 }

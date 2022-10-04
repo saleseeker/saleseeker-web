@@ -11,7 +11,8 @@ export default function Browse() {
     const [filteredItems, setFilteredItems] = useState(null);
     const [searchQuery, setSearchQuery] = useState("");
     const [paginationIndex, setPaginationIndex] = useState(1);
-    const [filter, setFilter] = useState("alphabetical");
+    const [pageCount, setPageCount] = useState(1);
+    const [filter, setFilter] = useState("name");
     const [calledAPI, setCalledAPI] = useState(false);
     const [defaultSubscriptionValues, setDefaultSubscriptionValues] = useState(null);
     const [sites, setSites] = useState(null);
@@ -22,18 +23,25 @@ export default function Browse() {
 
         (async () => {
             setSites(await SaleSeekerGateway.GetSites());
-            setFilteredItems(await SaleSeekerGateway.GetItems());
+            const items = await SaleSeekerGateway.GetItems();
+            setFilteredItems(items);
+            setCatalogueItems(items);
+            setPageCount(calculatePageCount(items.length));
             setSubscriptions(await SaleSeekerGateway.GetSubscriptions());
           })();
     },[]);
 
     const filterItems = () => {
         if (searchQuery == "" || searchQuery.length == 0){
-            setFilteredItems(catalogueItems);
+            setFilteredItems(catalogueItems.sort(getSortFunction()));
             return;
         }
-        const filteredArray = catalogueItems.filter(item => { return item.name.toLowerCase().includes(searchQuery.toLowerCase()); });
-        setFilteredItems(filteredArray);
+        const filteredItems = catalogueItems
+        .filter(item => { 
+            return item.name.toLowerCase().includes(searchQuery.toLowerCase()); 
+        })
+        .sort(getSortFunction());
+        setFilteredItems(filteredItems);
     }
 
     const handleSearchQueryChange = (e) => {
@@ -48,9 +56,23 @@ export default function Browse() {
 
     }
 
+    const calculatePageCount = (itemCount) => {
+        return Math.ceil(itemCount / 12);
+    }
+
+    const getSortFunction = () => {
+        const sortFunction = (a, b) => {
+            if (1 === 1){
+                return a[filter].toLowerCase() > b[filter].toLowerCase() ? 1 : 0;
+            }
+            return a[filter].toLowerCase() > b[filter].toLowerCase() ? 1 : 0;
+        }
+        return sortFunction;
+    }
+
     return (
         <Container>
-            <Typography variant="h3">Browse</Typography>
+            <Typography variant="h4">Browse</Typography>
             <Box
                 sx={{
                     display: 'flex',
@@ -86,7 +108,7 @@ export default function Browse() {
                 }}>
                 <Typography
                     sx={{ paddingRight: 1 }}>
-                    Filters: 
+                    Sort: 
                 </Typography>
                 <Select
                     labelId="demo-simple-select-label"
@@ -97,8 +119,8 @@ export default function Browse() {
                     onChange={handleFilterChange}
                     size='small'
                 >
-                    <MenuItem value="alphabetical">Alphabetical (A-Z)</MenuItem>
-                    <MenuItem value="alphabeticalDesc">Alphabetical (Z-A)</MenuItem>
+                    <MenuItem value="name">Alphabetical (A-Z)</MenuItem>
+                    <MenuItem value="name">Alphabetical (Z-A)</MenuItem>
                     <MenuItem value="price">Price (Low-High)</MenuItem>
                     <MenuItem value="priceDesc">Price (High-Low)</MenuItem>
                 </Select>
@@ -124,7 +146,7 @@ export default function Browse() {
                 })}
             </Box>
             <Box sx={{display:'flex', justifyContent: 'center', marginTop: 3}}>
-                <Pagination count={10} page={paginationIndex} onChange={handlePageChange}></Pagination>
+                <Pagination count={pageCount} page={paginationIndex} onChange={handlePageChange}></Pagination>
             </Box>
         </Container>
     );
