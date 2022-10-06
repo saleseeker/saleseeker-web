@@ -3,10 +3,12 @@ import { Button, Pagination, Typography, TextField, Select, MenuItem } from "@mu
 import { Container, Box } from '@mui/system';
 import Item from '../components/Item';
 import { itemMocks, sitesMock } from './../Mocks.js';
-
+import * as actions from '../actions';
 export default function Browse() {
-
-    const [catalogueItems, setCatalogueItems] = useState(itemMocks);
+    
+    const items = actions.getItems();
+    console.log("items : ",items);
+    const[catalogueItems, setCatalogueItems] = useState(itemMocks);
     const [filteredItems, setFilteredItems] = useState(itemMocks);
     const [searchQuery, setSearchQuery] = useState("");
     const [paginationIndex, setPaginationIndex] = useState(1);
@@ -14,6 +16,7 @@ export default function Browse() {
     const [calledAPI, setCalledAPI] = useState(false);
 
     useEffect(() => {
+        console.log();
         //TODO: Add API Call to Fetch Data from Backend
     });
 
