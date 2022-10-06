@@ -16,8 +16,10 @@ import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import { Container } from '@mui/material';
 
+const logo = require('./../images/radar-white.png');
+
 const drawerWidth = 240;
-const navItems = ['Home', 'Browse', 'Subscriptions'];
+const navItems = ['Home', 'Browse', 'Subscriptions', 'Settings'];
 
 function Header(props) {
   const { window } = props;
@@ -52,27 +54,21 @@ function Header(props) {
   return (
     <Container>
       <AppBar component="nav">
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ display: { sm: 'block' }, justifyContent: 'left' }}
-          >
-            SaleSeeker
-          </Typography>
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center'}}>
+            <img id='header-logo' src={logo} />
+            <Typography
+              variant="h5"
+              component="div"
+              sx={{ display: { sm: 'block', marginLeft: '10px' }, justifyContent: 'left' }}
+            >
+              SaleSeeker
+            </Typography>
+          </Box>
           <Box sx={{ display: { xs: 'none', sm: 'block' }, marginLeft: '15px' }}>
             {navItems.map((item) => (
-              <Button key={item} sx={{ color: '#fff' }}>
-                <Link to={`/${item}`}>
+              <Button key={item}>
+                <Link to={`/${item}`} className='navbar-link'>
                   {item}
                 </Link>
               </Button>
