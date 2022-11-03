@@ -1,4 +1,4 @@
 {
     "CURRENCY_SYMBOL" : "R",
-    "SALESEEKER_API_URL" : "https://"
+    "SALESEEKER_API_URL" : "https:/saleseeker-api-dev.azurewebsites.net/api"
 }

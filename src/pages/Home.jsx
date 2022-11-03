@@ -17,18 +17,21 @@ export default function Home() {
 
     useEffect(() => {
         (async () => {
-            setDefaultSubscriptionValues(SettingGateway.GetDefaultSubscriptionValues());
+            const userSettings = SettingGateway.GetDefaultSubscriptionValues();
+            setDefaultSubscriptionValues(userSettings);
+            console.log("Settings", SettingGateway.GetDefaultSubscriptionValues());
+            if (userSettings)
+                setSubscriptions(await SaleSeekerGateway.GetSubscriptions());
             setSites(await SaleSeekerGateway.GetSites());
-            const items = await SaleSeekerGateway.GetItems();
-            setFeaturedProducts(items);
+            setFeaturedProducts(await SaleSeekerGateway.GetItems());
           })();
     },[]);
     
     return (
-        <Container>
+        <Box>
             <Hero/>
            <br/>
-            <Typography variant="h5">Featured Products</Typography>
+            <Typography variant="h5">Latest Products</Typography>
             <Box className="carousel">
             {featuredProducts.map((item,index)=>{
                 return (
@@ -43,6 +46,22 @@ export default function Home() {
             })}
             </Box>
             <br/>
+            <Typography variant="h5" sx={{ marginTop: "20px" }}>Categories</Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', height: '125px', marginBottom: '20px', gap: '20px' }}>
+                <Box className="category-card">
+                    <Typography variant="h5">Beers</Typography>
+                </Box>
+                <Box className="category-card">
+                    <Typography variant="caption">Whiskeys</Typography>
+                </Box>
+                <Box className="category-card">
+                    <Typography variant="caption">Wine</Typography>
+                </Box>
+                <Box className="category-card">
+                    <Typography variant="caption">Ciders</Typography>
+                </Box>
+            </Box>
+            <br />
             <Typography variant="h5">My Subscriptions</Typography>
             <Box className="carousel">
                 {featuredProducts.map((item,index)=>{
@@ -59,6 +78,6 @@ export default function Home() {
             </Box>
             <br />
             <Footer />
-        </Container>
+        </Box>
     );
 }
