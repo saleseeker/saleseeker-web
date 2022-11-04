@@ -1,13 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { Typography, Select, MenuItem, Switch, Grid, Checkbox } from '@mui/material';
+import { ConstructionOutlined } from '@mui/icons-material';
 
 const Subscribe = ({ item, sites, subscriptions }) => {
-    
     const getSite = (id) => sites.find(s => s.id == id);
-    const subscription = subscriptions.find(s => s.itemID == item.id);
+    const subscription = subscriptions.filter(s => s.itemId == item.id);
+    const [alertThreshold, setAlertThreshold] = useState(subscription ? subscription.alertThreshold : 10);
     const siteIDs = sites.map(s => s.id);
+
+    const handleThresholdChange = (e) => {
+        setAlertThreshold(e.target.value);
+    }
 
     return (
         <Box sx={{ border: '1px solid grey', borderRadius: 2 }}>
@@ -28,9 +33,10 @@ const Subscribe = ({ item, sites, subscriptions }) => {
                                         <Select
                                             labelId="alert-threshold-select-label"
                                             id="alert-threshold-select"
-                                            value={subscription ? subscription.alertThreshold : '10'}                                            
+                                            value={alertThreshold}                                            
                                             label="Alert Threshold"
                                             size="small"
+                                            onChange={handleThresholdChange}
                                             sx={{ marginTop: '5px' }}
                                         >
                                             <MenuItem value={5}>5%</MenuItem>
@@ -46,7 +52,7 @@ const Subscribe = ({ item, sites, subscriptions }) => {
                                         <Select
                                             labelId="targetted-stores-select-label"
                                             id="targetted-stores-select"
-                                            value={subscription ? subscription.sites : siteIDs}
+                                            value={subscription ? subscription : siteIDs}
                                             label="Targetted Stores"
                                             multiple
                                             size="small"
@@ -55,10 +61,10 @@ const Subscribe = ({ item, sites, subscriptions }) => {
                                         >
                                             {
                                                 item.siteItems.map(siteItem => {
-                                                    var site = getSite(siteItem.siteID);
+                                                    var site = getSite(siteItem.siteId);
                                                     return (
-                                                    <MenuItem key={siteItem.siteID} value={siteItem.siteID}>
-                                                        <Checkbox checked={subscription == null || subscription.sites.indexOf(siteItem.siteID) > -1}/>
+                                                    <MenuItem key={siteItem.siteId} value={siteItem.siteId}>
+                                                        <Checkbox checked={false}/>
                                                         <img alt={site.name} src={site.logo} style={{ maxHeight: 20 }}></img>
                                                     </MenuItem>
                                                 )})
@@ -68,7 +74,7 @@ const Subscribe = ({ item, sites, subscriptions }) => {
                                 </Box>
                             </Box>
                             <Box sx={{ textAlign: 'right', width: '100%', marginRight: '40px', marginTop: '60px' }}>
-                                <Switch checked={subscription} />
+                                <Switch checked={subscription != null} />
                             </Box>
                         </Box>
                     </Grid>

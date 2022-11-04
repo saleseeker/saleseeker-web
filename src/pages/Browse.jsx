@@ -4,6 +4,7 @@ import { Container, Box } from '@mui/system';
 import Item from '../components/Item';
 import SettingGateway from '../gateways/SettingGateway';
 import SaleSeekerGateway from '../gateways/SaleSeekerGateway';
+import Footer from './../components/Footer';
 
 export default function Browse() {
 
@@ -12,7 +13,7 @@ export default function Browse() {
     const [searchQuery, setSearchQuery] = useState("");
     const [paginationIndex, setPaginationIndex] = useState(1);
     const [pageCount, setPageCount] = useState(1);
-    const [filter, setFilter] = useState("name");
+    const [sort, setSort] = useState("name");
     const [calledAPI, setCalledAPI] = useState(false);
     const [defaultSubscriptionValues, setDefaultSubscriptionValues] = useState(null);
     const [sites, setSites] = useState(null);
@@ -52,8 +53,8 @@ export default function Browse() {
         setPaginationIndex(value);
     }
 
-    const handleFilterChange = () => {
-
+    const handleSortChange = (event) => {
+        setSort(event.target.value);
     }
 
     const calculatePageCount = (itemCount) => {
@@ -63,91 +64,94 @@ export default function Browse() {
     const getSortFunction = () => {
         const sortFunction = (a, b) => {
             if (1 === 1){
-                return a[filter].toLowerCase() > b[filter].toLowerCase() ? 1 : 0;
+                return a[sort].toLowerCase() > b[sort].toLowerCase() ? 1 : 0;
             }
-            return a[filter].toLowerCase() > b[filter].toLowerCase() ? 1 : 0;
+            return a[sort].toLowerCase() > b[sort].toLowerCase() ? 1 : 0;
         }
         return sortFunction;
     }
 
     return (
-        <Container>
-            <Typography variant="h4">Browse</Typography>
-            <Box
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'left',
-                    marginTop: 2
-                 }}      
-            >
-                <TextField 
-                    placeholder='Search' 
-                    size='small'
-                    autoFocus={true}
-                    value={searchQuery}
-                    onChange={handleSearchQueryChange}
+        <Box className="page">
+            <Box sx={{ paddingLeft: 10, paddingRight: 10 }}>
+                <Typography variant="h4">Browse</Typography>
+                <Box
                     sx={{
-                        flexGrow: 1,
-                        paddingRight: 2,
-                    }}
-                />
-                <Button 
-                    color="primary" 
-                    variant="outlined"
-                    onClick={filterItems}>
-                        Search
-                </Button>
-            </Box>
-            <Box
-                sx={{ 
-                    display: 'flex',
-                    alignItems: 'center',
-                    p: 2
-                }}>
-                <Typography
-                    sx={{ paddingRight: 1 }}>
-                    Sort: 
-                </Typography>
-                <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={filter}
-                    label="Sort By"
-                    placeholder='Sort By'
-                    onChange={handleFilterChange}
-                    size='small'
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'left',
+                        marginTop: 2
+                    }}      
                 >
-                    <MenuItem value="name">Alphabetical (A-Z)</MenuItem>
-                    <MenuItem value="name">Alphabetical (Z-A)</MenuItem>
-                    <MenuItem value="price">Price (Low-High)</MenuItem>
-                    <MenuItem value="priceDesc">Price (High-Low)</MenuItem>
-                </Select>
-            </Box>
-            <Box
-                sx={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    justifyContent: 'left',
-                    marginTop: 3
-                }} 
-                >
-                {filteredItems?.map((item,index)=>{
-                    return (
-                    <Box 
+                    <TextField 
+                        placeholder='Search' 
+                        size='small'
+                        autoFocus={true}
+                        value={searchQuery}
+                        onChange={handleSearchQueryChange}
                         sx={{
-                            p: 0.5
-                        }} 
-                        key={item.name}>
-                        { sites && <Item item={item} sites={sites} subscriptions={subscriptions} defaultSubscriptionValues={defaultSubscriptionValues}/>}
-                    </Box>
-                    )
-                })}
+                            flexGrow: 1,
+                            paddingRight: 2,
+                        }}
+                    />
+                    <Button 
+                        color="primary" 
+                        variant="outlined"
+                        onClick={filterItems}>
+                            Search
+                    </Button>
+                </Box>
+                <Box
+                    sx={{ 
+                        display: 'flex',
+                        alignItems: 'center',
+                        p: 2
+                    }}>
+                    <Typography
+                        sx={{ paddingRight: 1 }}>
+                        Sort: 
+                    </Typography>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={sort}
+                        label="Sort By"
+                        placeholder='Sort By'
+                        onChange={handleSortChange}
+                        size='small'
+                    >
+                        <MenuItem value="name">Alphabetical (A-Z)</MenuItem>
+                        <MenuItem value="nameDesc">Alphabetical (Z-A)</MenuItem>
+                        <MenuItem value="price">Price (Low-High)</MenuItem>
+                        <MenuItem value="priceDesc">Price (High-Low)</MenuItem>
+                    </Select>
+                </Box>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        justifyContent: 'left',
+                        marginTop: 3
+                    }} 
+                    >
+                    {filteredItems?.map((item,index)=>{
+                        return (
+                        <Box 
+                            sx={{
+                                p: 0.5
+                            }} 
+                            key={item.name}>
+                            { sites && <Item item={item} sites={sites} subscriptions={subscriptions} defaultSubscriptionValues={defaultSubscriptionValues}/>}
+                        </Box>
+                        )
+                    })}
+                </Box>
+                <Box sx={{display:'flex', justifyContent: 'center', marginTop: 3, marginBottom: 3}}>
+                    <Pagination count={pageCount} page={paginationIndex} onChange={handlePageChange}></Pagination>
+                </Box>
             </Box>
-            <Box sx={{display:'flex', justifyContent: 'center', marginTop: 3}}>
-                <Pagination count={pageCount} page={paginationIndex} onChange={handlePageChange}></Pagination>
-            </Box>
-        </Container>
+            <Footer />
+        </Box>
     );
 }

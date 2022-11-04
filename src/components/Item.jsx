@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react'
 import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
 import { Button, Typography } from '@mui/material';
 import minBy from 'lodash.minby';
 import { formatCurrency } from '../common/Formatter'
@@ -8,8 +7,8 @@ import SubscribeButton from './SubscribeButton';
 import {Link} from 'react-router-dom'
 
 const renderPrice = (item, sites, minSiteItem) => {
-  const onSale = minSiteItem.price / item.avePrice < 0.97
-  var site = sites.find(s => s.id == minSiteItem.siteID);
+  const onSale = minSiteItem.price / item.avePrice < 0.97;
+  var site = sites.find(s => s.id == minSiteItem.siteId);
   return onSale ?
     (<Fragment>
       <Box sx={{ display: { display: 'flex' } }}>
@@ -33,9 +32,8 @@ const renderPrice = (item, sites, minSiteItem) => {
 
 const Item = ({ item, sites, subscriptions, defaultSubscriptionValues }) => {
   const minSiteItem = minBy(item.siteItems, si => si.price);
-
   return (
-    <Box sx={{ height: 320, border: '1px solid grey', borderRadius: 2 }}>
+    <Box sx={{ height: 350, maxWidth: 300, boxShadow: "rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px", borderRadius: 1 }}>
       <Box sx={{padding:'0px 12px'}}>
         <Box sx={{ textAlign: 'center' }}>
           <img src={item.imageUrl} alt={item.name} style={{ maxHeight: "200px" }} />

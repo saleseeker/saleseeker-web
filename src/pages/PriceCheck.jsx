@@ -10,7 +10,8 @@ const getRows = (item, sites) => {
     const orderedSiteItems = item.siteItems.sort(s => s.price);
 
     return orderedSiteItems.map(siteItem => {
-        var site = sites.find(s => s.id == siteItem.siteID);
+        var site = sites.find(s => s.id == siteItem.siteId);
+        console.log(siteItem);
         return (
             <TableRow key={siteItem.siteID}>
                 <TableCell><Link href={site.url}><img alt={site.name} src={site.logo} style={{maxHeight:20}}></img></Link></TableCell>
@@ -33,12 +34,11 @@ const PriceCheck = () => {
 
             setItem((await SaleSeekerGateway.GetItems()).find(i => i.id == params.itemID));
           })();
-      });
-    
+    }, []);    
 
     return (
         item && sites &&
-        <Container>
+        <Container className="page">
             <Typography variant="h4">
                 Price Check
             </Typography>

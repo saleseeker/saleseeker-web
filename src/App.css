@@ -1,6 +1,6 @@
-.AppContent {
-    margin-top: 100px;
-    width: 100vw;
+#header-logo {
+    width: 50px;
+    height: 50px;
 }
 
 #home-hero {
@@ -9,7 +9,7 @@
     flex-wrap: wrap-reverse;
     align-items: center;
     justify-content: space-between;
-    height: 50vh;
+    height: 45vh;
     box-shadow: rgba(27, 31, 35, 0.1) 0px 1px 0px, rgba(255, 255, 255, 0.25) 0px 1px 0px inset;
     background-image: url('./assets/images/hero-waves-2.svg');
     background-repeat: no-repeat;
@@ -18,14 +18,32 @@
     background-blend-mode: lighten;
 }
 
-#header-logo {
-    width: 50px;
-    height: 50px;
-}
-
 #footer-logo {
     width: 75px;
     height: 75px;
+    margin-left: 15px;
+}
+
+#footer-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    height: 30vh;
+    border-top: 1px;
+    border-color: black;
+}
+
+#footer-container ul {
+    list-style: none;
+}
+
+#footer-container li {
+    margin-bottom: 10px;
+}
+
+.AppContent {
+    margin-top: 100px;
+    width: 100vw;
 }
 
 .footer {
@@ -49,23 +67,6 @@
     background-color: aqua;
     border-radius: 5px;
     row-gap: 10px;
-}
-
-#footer-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: end;
-    height: 30vh;
-    border-top: 1px;
-    border-color: black;
-}
-
-#footer-container ul {
-    list-style: none;
-}
-
-#footer-container li {
-    margin-bottom: 10px;
 }
 
 .category-card {

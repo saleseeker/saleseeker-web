@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import Container from '@mui/material/Container';
-import { Button, Typography, Box } from '@mui/material';
+import { Button, Typography, Box, Container } from '@mui/material';
 import DefaultSubscribeValues from '../components/DefaultSubscribeValues';
 import SettingGateway from '../gateways/SettingGateway';
 import SaleSeekerGateway from '../gateways/SaleSeekerGateway';
@@ -23,7 +22,7 @@ const Settings = () => {
     };
 
     return (
-        <Container>
+        <Container className="page">
             <form onSubmit={handleSave}>
                 <Typography variant="h4">
                     Default Subscription Values

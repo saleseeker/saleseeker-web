@@ -1,3 +1,4 @@
+import { ConnectWithoutContact } from "@mui/icons-material";
 import axios from "axios"
 import configData from "../config.json";
 import { itemMocks, sitesMock, subscriptionMock } from "../Mocks";
@@ -8,12 +9,20 @@ const SaleSeekerGateway = {
         return await axios.get(`${configData.SALESEEKER_API_URL}/Sites`);
     },
     GetSubscriptions: async (emailAddress) => {
-        return subscriptionMock;
-        return axios.get(`${configData.SALESEEKER_API_URL}/Subscriptions`, {
-            headers: {
-                emailAddress: emailAddress
-            }
-        });
+        //return subscriptionMock;
+        try {
+            // Hard coded email parameter for testing purposes
+            const getSubscriptions = await axios.get(`${configData.SALESEEKER_API_URL}/subscribe/get?email=mrbtmkhabela@gmail.com`,
+            {
+                headers: {
+                    'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJKV1RBdXRoZW50aWNhdGlvblNlcnZlciIsImlhdCI6MTY2MjcyODM2OCwiZXhwIjoxNjk0MjY0Mzk3LCJhdWQiOiJKV1RTZXJ2aWNlUG9zdG1hbkNsaWVudCIsInN1YiI6IkpXVFNlcnZpY2VBY2Nlc3NUb2tlbiJ9.KMRzEFusF1dlC9Bye7ReZaGI2eUVEHHBTZJ4pmYZXeA'               
+                }
+            });
+            return getSubscriptions.data.result[0].subscriptions;
+        } catch(err) {
+            console.log(err);
+        }
+        return [];
     },
     SaveSubscription: async (emailAddress, itemID, alertThreshold, sites) => {
         axios.post(`${configData.SALESEEKER_API_URL}/Subscriptions`, {
@@ -25,8 +34,13 @@ const SaleSeekerGateway = {
         });
     },
     GetItems: async () => {
-        return itemMocks;
-        return await axios.get(`${configData.SALESEEKER_API_URL}/Items`);
+        try {
+            const getItems = await axios.get(`${configData.SALESEEKER_API_URL}/ui/items`);
+            return getItems.data.result;
+        }
+        catch(err) {
+            console.log(err);
+        };
     }
 };
 

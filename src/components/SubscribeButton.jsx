@@ -15,7 +15,8 @@ const SubscribeButton = ({ item, sites, subscriptions, defaultSubscriptionValues
     }, [defaultSubscriptionValues]);
 
     const handleClick = (subscription) => {
-        if (!subscription && defaultSubscriptionValues.emailAddress == '')
+        setOpen(true);
+        if (!subscription && defaultSubscriptionValues.emailAddress != '')
             setOpen(true);
         else
             SaleSeekerGateway.SaveSubscription(defaultSubscriptionValues.emailAddress, item.id, defaultSubscriptionValues.alertThreshold, defaultSubscriptionValues.siteIDs);
