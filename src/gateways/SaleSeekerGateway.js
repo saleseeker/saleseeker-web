@@ -8,6 +8,9 @@ const SaleSeekerGateway = {
         return sitesMock;
         return await axios.get(`${configData.SALESEEKER_API_URL}/Sites`);
     },
+    //TODO - Move email to header
+    //TODO - return one subscription per item with sites array in response
+    //TODO - remove Brian hardcoded email address
     GetSubscriptions: async (emailAddress) => {
         //return subscriptionMock;
         try {
@@ -24,8 +27,10 @@ const SaleSeekerGateway = {
         }
         return [];
     },
+    //TODO - Remove create/edit and have one end points to handle both. 
+    //TODO - Move email to header
     SaveSubscription: async (emailAddress, itemID, alertThreshold, sites) => {
-        axios.post(`${configData.SALESEEKER_API_URL}/Subscriptions`, {
+        axios.post(`${configData.SALESEEKER_API_URL}/subscribe`, {
             itemID, alertThreshold, sites
         }, {
             headers: {
@@ -33,6 +38,14 @@ const SaleSeekerGateway = {
             }
         });
     },
+    //TODO create delete
+    DeleteSubscription: async (emailAddress, itemID) => {
+        axios.delete(`${configData.SALESEEKER_API_URL}/subscribe/delete?itemId=${itemID}`, {
+            headers: {
+                emailAddress: emailAddress
+            }
+        });
+    },    
     GetItems: async () => {
         try {
             const getItems = await axios.get(`${configData.SALESEEKER_API_URL}/ui/items`);

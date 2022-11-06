@@ -9,16 +9,19 @@ const Subscriptions = () => {
     const params = useParams();
     const [items, setItems] = useState(null);
     const [sites, setSites] = useState(null);
-    const [defaultSubscriptionValues, setDefaultSubscriptionValues] = useState(null);
-    const [subscriptions, setSubscriptions] = useState([]);
+    const [defaultSubscriptionValues, setDefaultSubscriptionValues] = useState(SettingGateway.GetDefaultSubscriptionValues());
+    const [subscriptions, setSubscriptions] = useState(null);
     const [hasEmailAddress, setHasEmailAddress] = useState(false);
-    const [email, setEmail] = useState(SettingGateway.GetDefaultSubscriptionValues().emailAddress ?? "");
 
     useEffect(() => {
-        if (email != ""){
+        if (defaultSubscriptionValues.emailAddress != ""){
             fetch();
         }
-    },[email]);
+
+        if (defaultSubscriptionValues.emailAddress != '')
+            setHasEmailAddress(true);
+
+    },[]);
 
     const handleSave = () => {
         setHasEmailAddress(true);
@@ -31,8 +34,7 @@ const Subscriptions = () => {
     }
 
     const handleEmailChange = (e) => {
-        e.preventDefault();
-        setEmail(e.target.value);
+        setDefaultSubscriptionValues({ ...defaultSubscriptionValues, emailAddress: e.target.value });
     }
 
     const renderEmail = () => {
@@ -49,7 +51,7 @@ const Subscriptions = () => {
                         size="small"
                         variant="outlined"
                         sx={{ width: '300px' }}
-                        value={email}
+                        value={defaultSubscriptionValues.emailAddress}
                         onChange={handleEmailChange}
                     />
                 </Stack>
@@ -67,7 +69,7 @@ const Subscriptions = () => {
         if (params.itemId) {
             return (renderSubscribe(params.itemId))
         }
-
+        debugger;
         return (subscriptions.length === 0) ? (<Box>No Subscriptions</Box>) : subscriptions.map(s => renderSubscribe(s.itemId));
     }
 
@@ -76,9 +78,9 @@ const Subscriptions = () => {
             <Typography variant="h4">{params.itemId ? 'Subscription' : 'Subscriptions'}</Typography>
             <Box sx={{ marginTop: '10px' }}>
                 {
-                    !hasEmailAddress ?
+                    defaultSubscriptionValues && !hasEmailAddress ?
                         renderEmail() :
-                        renderSubscription()
+                        defaultSubscriptionValues && items && sites && subscriptions && renderSubscription()
                 }
             </Box>
         </Container>

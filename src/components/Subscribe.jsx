@@ -2,16 +2,52 @@ import React, { useState } from 'react'
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { Typography, Select, MenuItem, Switch, Grid, Checkbox } from '@mui/material';
-import { ConstructionOutlined } from '@mui/icons-material';
+import SaleSeekerGateway from '../gateways/SaleSeekerGateway';
+import SettingGateway from '../gateways/SettingGateway';
 
 const Subscribe = ({ item, sites, subscriptions }) => {
     const getSite = (id) => sites.find(s => s.id == id);
     const subscription = subscriptions.filter(s => s.itemId == item.id);
-    const [alertThreshold, setAlertThreshold] = useState(subscription ? subscription.alertThreshold : 10);
+    const [alertThreshold, setAlertThreshold] = useState(subscription && subscription.length > 0 ? subscription[0].notificationThreshold : 10);
+    const [subscriptionSites, setSubscriptionSites] = useState(subscription && subscription.length > 0 ? subscription.map(s => s.siteId) : null);
+    const [subscribed, setSubscribed] = useState(subscription && subscription.length > 0);
     const siteIDs = sites.map(s => s.id);
 
     const handleThresholdChange = (e) => {
         setAlertThreshold(e.target.value);
+
+        if (subscribed)
+            SaveSubscription();
+    }
+
+    const handleSitesChange = (e) => {
+        setSubscriptionSites(getSiteIDArray(e.target.value));
+        
+        if (subscribed)
+            SaveSubscription();
+    }
+
+    const handleSubscriptionToggle = (e) => {
+        setSubscribed(e.target.value);
+
+        SaveSubscription();
+    };
+
+    const SaveSubscription = () => {
+
+        var defaultSubscriptionValues = SettingGateway.GetDefaultSubscriptionValues();
+        if (subscribed)
+            SaleSeekerGateway.SaveSubscription(defaultSubscriptionValues.emailAddress, item.id, alertThreshold, subscriptionSites);
+        else
+            SaleSeekerGateway.DeleteSubscription(defaultSubscriptionValues.emailAddress, item.itemId);
+    };
+
+    const getSiteIDArray = (sites) => {
+        if (sites === '')
+            return [];
+        else if (sites.length == siteIDs.length)
+            return null;
+        return sites;
     }
 
     return (
@@ -52,10 +88,11 @@ const Subscribe = ({ item, sites, subscriptions }) => {
                                         <Select
                                             labelId="targetted-stores-select-label"
                                             id="targetted-stores-select"
-                                            value={subscription ? subscription : siteIDs}
+                                            value={subscriptionSites ? subscriptionSites : siteIDs}
                                             label="Targetted Stores"
                                             multiple
                                             size="small"
+                                            onChange={handleSitesChange}
                                             renderValue={(selected) => selected.length > 1 ? `${getSite(selected[0]).name} and ${selected.length - 1} more` : getSite(selected[0]).name}
                                             sx={{ marginTop: '5px' }}
                                         >
@@ -64,7 +101,7 @@ const Subscribe = ({ item, sites, subscriptions }) => {
                                                     var site = getSite(siteItem.siteId);
                                                     return (
                                                     <MenuItem key={siteItem.siteId} value={siteItem.siteId}>
-                                                        <Checkbox checked={false}/>
+                                                        <Checkbox checked={subscriptionSites == null || subscriptionSites.find(s => s == siteItem.siteId) != null}/>
                                                         <img alt={site.name} src={site.logo} style={{ maxHeight: 20 }}></img>
                                                     </MenuItem>
                                                 )})
@@ -74,7 +111,7 @@ const Subscribe = ({ item, sites, subscriptions }) => {
                                 </Box>
                             </Box>
                             <Box sx={{ textAlign: 'right', width: '100%', marginRight: '40px', marginTop: '60px' }}>
-                                <Switch checked={subscription != null} />
+                                <Switch checked={subscription != null && subscription.length > 0} onChange={handleSubscriptionToggle} />
                             </Box>
                         </Box>
                     </Grid>
