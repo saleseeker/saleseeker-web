@@ -54,7 +54,7 @@
     display: flex;
     overflow-y: hidden;
     overflow-x: auto;
-    height: 35vh;
+    height: 45vh;
 }
 
 .carousel::-webkit-scrollbar {
