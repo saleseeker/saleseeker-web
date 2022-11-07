@@ -52,6 +52,9 @@
 
 .carousel {
     display: flex;
+    overflow-y: hidden;
+    overflow-x: auto;
+    height: 35vh;
 }
 
 .navbar-link {
