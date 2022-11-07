@@ -57,6 +57,18 @@
     height: 35vh;
 }
 
+.carousel::-webkit-scrollbar {
+     width: 0 !important 
+}
+
+.carousel { 
+    overflow: -moz-scrollbars-none; 
+}
+
+.carousel { 
+    -ms-overflow-style: none; 
+}
+
 .navbar-link {
     color: white;
     font-weight: bold;
