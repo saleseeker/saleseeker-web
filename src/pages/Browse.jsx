@@ -61,6 +61,14 @@ export default function Browse() {
         return Math.ceil(itemCount / 12);
     }
 
+    const calculateCataloguePageStartIndex = () => {
+        return (paginationIndex-1) * 12;
+    }
+    
+    const calculateCataloguePageEndIndex = () => {
+        return ((paginationIndex-1) * 12) + 12;
+    }
+
     const getSortFunction = () => {
         const sortFunction = (a, b) => {
             if (1 === 1){
@@ -73,7 +81,7 @@ export default function Browse() {
 
     return (
         <Box className="page">
-            <Box sx={{ paddingLeft: 10, paddingRight: 10 }}>
+            <Box sx={{ paddingLeft: 30, paddingRight: 30 }}>
                 <Typography variant="h4">Browse</Typography>
                 <Box
                     sx={{
@@ -135,11 +143,12 @@ export default function Browse() {
                         marginTop: 3
                     }} 
                     >
-                    {filteredItems?.map((item,index)=>{
+                    {filteredItems?.slice(calculateCataloguePageStartIndex(), calculateCataloguePageEndIndex()).map((item,index)=>{
                         return (
                         <Box 
                             sx={{
-                                p: 0.5
+                                p: 0.5, 
+                                flex: 1,
                             }} 
                             key={item.name}>
                             { sites && <Item item={item} sites={sites} subscriptions={subscriptions} defaultSubscriptionValues={defaultSubscriptionValues}/>}
@@ -147,6 +156,7 @@ export default function Browse() {
                         )
                     })}
                 </Box>
+                <br />
                 <Box sx={{display:'flex', justifyContent: 'center', marginTop: 3, marginBottom: 3}}>
                     <Pagination count={pageCount} page={paginationIndex} onChange={handlePageChange}></Pagination>
                 </Box>
