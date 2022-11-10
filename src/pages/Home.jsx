@@ -64,14 +64,14 @@ export default function Home() {
                     <Box id="beer-category-card" className="category-card" onClick={navigateToBrowsePage}>
                         <Typography variant="h4" sx={{ fontWeight: 'bold', textShadow: 3 }}>Beers</Typography>
                     </Box>
-                    <Box id="wine-category-card" className="category-card" onClick={navigateToBrowsePage}>
-                        <Typography variant="h4" sx={{ fontWeight: 'bold', textShadow: 3 }}>Wine</Typography>
+                    <Box id="champagne-category-card" className="category-card" onClick={navigateToBrowsePage}>
+                        <Typography variant="h4" sx={{ fontWeight: 'bold', textShadow: 3 }}>Champagne</Typography>
                     </Box>
                     <Box id="whiskey-category-card" className="category-card" onClick={navigateToBrowsePage}>
                         <Typography variant="h4" sx={{ fontWeight: 'bold', textShadow: 3 }}>Whiskey</Typography>
                     </Box>
-                    <Box id="champagne-category-card" className="category-card" onClick={navigateToBrowsePage}>
-                        <Typography variant="h4" sx={{ fontWeight: 'bold', textShadow: 3 }}>Champagne</Typography>
+                    <Box id="wine-category-card" className="category-card" onClick={navigateToBrowsePage}>
+                        <Typography variant="h4" sx={{ fontWeight: 'bold', textShadow: 3 }}>Wine</Typography>
                     </Box>
                 </Box>
                 <br />
