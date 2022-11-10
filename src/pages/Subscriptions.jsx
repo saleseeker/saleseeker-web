@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import { Typography, Box, Stack, TextField, Button, Container } from "@mui/material";
 import Subscribe from '../components/Subscribe';
 import { useParams } from 'react-router-dom'
@@ -61,9 +61,15 @@ const Subscriptions = () => {
     }
 
     const renderSubscription = () => {
+        var distinctItems = {};
         const renderSubscribe = (itemId) => {
-            const item = items.find(i => i.id == itemId);
-            return (<Box key={itemId} sx={{ marginBottom: '15px' }}><Subscribe item={item} sites={sites} subscriptions={subscriptions} /></Box>);
+            if (!distinctItems[itemId])
+            {
+                distinctItems[itemId] = true;
+                const item = items.find(i => i.id == itemId);
+                return (<Box key={itemId} sx={{ marginBottom: '15px' }}><Subscribe item={item} sites={sites} subscriptions={subscriptions} /></Box>);
+            }
+            return <Fragment/>;
         };
 
         if (params.itemId) {

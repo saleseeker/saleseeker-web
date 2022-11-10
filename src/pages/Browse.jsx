@@ -23,12 +23,14 @@ export default function Browse() {
     useEffect(() => {
 
         (async () => {
+            if (defaultSubscriptionValues && defaultSubscriptionValues.emailAddress != '')
+            setSubscriptions(await SaleSeekerGateway.GetSubscriptions(defaultSubscriptionValues.emailAddress));
+
             setSites(await SaleSeekerGateway.GetSites());
             const items = await SaleSeekerGateway.GetItems();
             setFilteredItems(items);
             setCatalogueItems(items);
             setPageCount(calculatePageCount(items.length));
-            setSubscriptions(await SaleSeekerGateway.GetSubscriptions(defaultSubscriptionValues.emailAddress));
           })();
     },[]);
 

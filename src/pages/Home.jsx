@@ -19,7 +19,7 @@ export default function Home() {
 
     useEffect(() => {
         (async () => {
-            if (defaultSubscriptionValues)
+            if (defaultSubscriptionValues && defaultSubscriptionValues.emailAddress != '')
                 setSubscriptions(await SaleSeekerGateway.GetSubscriptions(defaultSubscriptionValues.emailAddress));
             setSites(await SaleSeekerGateway.GetSites());
             setFeaturedProducts(await SaleSeekerGateway.GetItems());
