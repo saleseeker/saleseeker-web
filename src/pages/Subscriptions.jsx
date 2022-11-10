@@ -30,7 +30,7 @@ const Subscriptions = () => {
     const fetch = async () => {
         setSites(await SaleSeekerGateway.GetSites());
         setItems(await SaleSeekerGateway.GetItems());
-        setSubscriptions(await SaleSeekerGateway.GetSubscriptions());
+        setSubscriptions(await SaleSeekerGateway.GetSubscriptions(defaultSubscriptionValues.emailAddress));
     }
 
     const handleEmailChange = (e) => {
@@ -69,7 +69,6 @@ const Subscriptions = () => {
         if (params.itemId) {
             return (renderSubscribe(params.itemId))
         }
-        debugger;
         return (subscriptions.length === 0) ? (<Box>No Subscriptions</Box>) : subscriptions.map(s => renderSubscribe(s.itemId));
     }
 

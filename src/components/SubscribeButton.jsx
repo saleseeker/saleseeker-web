@@ -9,22 +9,40 @@ const SubscribeButton = ({ item, sites, subscriptions, defaultSubscriptionValues
 
     const [open, setOpen] = useState(false);
     const [subscriptionValues, setSubscriptionValues] = useState(null);
+    const [itemSubscriptions, setItemSubscriptions] = useState(subscriptions);
+    const [subscribed, setSubscribed] = useState(false);
 
     useEffect(() => {
         setSubscriptionValues(defaultSubscriptionValues);
+        var subscription = (subscriptions != null) ? subscriptions.find(s => s.itemId == item.id) : {};
+        setSubscribed(subscription);
     }, [defaultSubscriptionValues]);
 
-    const handleClick = (subscription) => {
-        setOpen(true);
-        if (!subscription && defaultSubscriptionValues.emailAddress != '')
+    const handleClick = async (subscription) => {
+
+        if (!subscription && defaultSubscriptionValues.emailAddress == '')
             setOpen(true);
         else
-            SaleSeekerGateway.SaveSubscription(defaultSubscriptionValues.emailAddress, item.id, defaultSubscriptionValues.alertThreshold, defaultSubscriptionValues.siteIDs);
+        {
+            if (subscribed)                
+            {
+                await SaleSeekerGateway.DeleteSubscription(defaultSubscriptionValues.emailAddress, item.id);                
+            }
+            else
+                await SaleSeekerGateway.CreateSubscription(defaultSubscriptionValues.emailAddress, item.id, defaultSubscriptionValues.alertThreshold, defaultSubscriptionValues.siteIDs ?? sites.map(s => `${s.id}`));
+                
+            await new Promise(r => setTimeout(r, 500));    
+            setItemSubscriptions(await SaleSeekerGateway.GetSubscriptions(subscriptionValues.emailAddress));
+            setSubscribed(!subscription);
+        }
     };
 
-    const handleSubscribe = (e) => {
+    const handleSubscribe = async (e) => {
         SettingGateway.SaveDefaultSubscriptionValues(subscriptionValues);
-        SaleSeekerGateway.SaveSubscription(subscriptionValues.emailAddress, item.id, subscriptionValues.alertThreshold, subscriptionValues.siteIDs);
+        await SaleSeekerGateway.CreateSubscription(subscriptionValues.emailAddress, item.id, subscriptionValues.alertThreshold, subscriptionValues.siteIDs ?? sites.map(s => `${s.id}`));
+        await new Promise(r => setTimeout(r, 500));    
+        setItemSubscriptions(await SaleSeekerGateway.GetSubscriptions(subscriptionValues.emailAddress));
+        setSubscribed(true);        
         e.preventDefault();
         setOpen(false);
     };
@@ -33,13 +51,13 @@ const SubscribeButton = ({ item, sites, subscriptions, defaultSubscriptionValues
         setOpen(false);
     };
 
-    const subscription = (subscriptions != null) ? subscriptions.find(s => s.itemID == item.id) : {};
+    const subscription = (itemSubscriptions != null) ? itemSubscriptions.find(s => s.itemId == item.id) : {};
 
     return (
         <Fragment>
             <ButtonGroup variant='text' sx={{ backgroundColor: '#D9D9D9', width: '100%', marginLeft: '5px', minWidth: '175px' }}>
-                <Button onClick={() => handleClick(subscription)} sx={{ width: '100%', color: 'black', textTransform: 'none', fontWeight: 'bold' }}>{subscription ? 'Unsubscribe' : 'Subscribe'}</Button>
-                {subscription && <Button sx={{ lineHeight: '1' }}><Link to={`/subscriptions/${item.id}`}><img src={require('../images/settings_icon.png')} alt="Buy" style={{ width: '20px' }} /></Link></Button>}
+                <Button onClick={() => handleClick(subscription)} sx={{ width: '100%', color: 'black', textTransform: 'none', fontWeight: 'bold' }}>{subscribed ? 'Unsubscribe' : 'Subscribe'}</Button>
+                {subscribed && <Button sx={{ lineHeight: '1' }}><Link to={`/subscriptions/${item.id}`}><img src={require('../images/settings_icon.png')} alt="Buy" style={{ width: '20px' }} /></Link></Button>}
             </ButtonGroup>
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Subscribe</DialogTitle>

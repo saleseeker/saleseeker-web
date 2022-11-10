@@ -15,12 +15,11 @@ export default function Browse() {
     const [pageCount, setPageCount] = useState(1);
     const [sort, setSort] = useState("name");
     const [calledAPI, setCalledAPI] = useState(false);
-    const [defaultSubscriptionValues, setDefaultSubscriptionValues] = useState(null);
+    const [defaultSubscriptionValues, setDefaultSubscriptionValues] = useState(SettingGateway.GetDefaultSubscriptionValues());
     const [sites, setSites] = useState(null);
     const [subscriptions, setSubscriptions] = useState(null);
 
     useEffect(() => {
-        setDefaultSubscriptionValues(SettingGateway.GetDefaultSubscriptionValues());
 
         (async () => {
             setSites(await SaleSeekerGateway.GetSites());
@@ -28,7 +27,7 @@ export default function Browse() {
             setFilteredItems(items);
             setCatalogueItems(items);
             setPageCount(calculatePageCount(items.length));
-            setSubscriptions(await SaleSeekerGateway.GetSubscriptions());
+            setSubscriptions(await SaleSeekerGateway.GetSubscriptions(defaultSubscriptionValues.emailAddress));
           })();
     },[]);
 

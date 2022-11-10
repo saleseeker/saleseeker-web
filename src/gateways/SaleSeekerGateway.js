@@ -8,41 +8,43 @@ const SaleSeekerGateway = {
         return sitesMock;
         return await axios.get(`${configData.SALESEEKER_API_URL}/Sites`);
     },
-    //TODO - Move email to header
-    //TODO - return one subscription per item with sites array in response
-    //TODO - remove Brian hardcoded email address
     GetSubscriptions: async (emailAddress) => {
         //return subscriptionMock;
         try {
-            // Hard coded email parameter for testing purposes
-            const getSubscriptions = await axios.get(`${configData.SALESEEKER_API_URL}/subscribe/get?email=mrbtmkhabela@gmail.com`,
+            const getSubscriptions = await axios.get(`${configData.SALESEEKER_API_URL}/subscribe?email=${emailAddress}`,
             {
                 headers: {
-                    'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJKV1RBdXRoZW50aWNhdGlvblNlcnZlciIsImlhdCI6MTY2MjcyODM2OCwiZXhwIjoxNjk0MjY0Mzk3LCJhdWQiOiJKV1RTZXJ2aWNlUG9zdG1hbkNsaWVudCIsInN1YiI6IkpXVFNlcnZpY2VBY2Nlc3NUb2tlbiJ9.KMRzEFusF1dlC9Bye7ReZaGI2eUVEHHBTZJ4pmYZXeA'               
+                    'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJKV1RBdXRoZW50aWNhdGlvblNlcnZlciIsImlhdCI6MTY2MjcyODM2OCwiZXhwIjoxNjk0MjY0Mzk3LCJhdWQiOiJKV1RTZXJ2aWNlUG9zdG1hbkNsaWVudCIsInN1YiI6IkpXVFNlcnZpY2VBY2Nlc3NUb2tlbiJ9.KMRzEFusF1dlC9Bye7ReZaGI2eUVEHHBTZJ4pmYZXeA'
                 }
             });
-            return getSubscriptions.data.result[0].subscriptions;
+            return getSubscriptions.data.result && getSubscriptions.data.result.length > 0 ? getSubscriptions.data.result[0].subscriptions : [];
         } catch(err) {
             console.log(err);
         }
         return [];
     },
-    //TODO - Remove create/edit and have one end points to handle both. 
-    //TODO - Move email to header
-    SaveSubscription: async (emailAddress, itemID, alertThreshold, sites) => {
+    CreateSubscription: async (emailAddress, itemID, notificationThreshold, sites) => {
         axios.post(`${configData.SALESEEKER_API_URL}/subscribe`, {
-            itemID, alertThreshold, sites
+            itemID, notificationThreshold, sites, email: emailAddress
         }, {
             headers: {
-                emailAddress: emailAddress
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJKV1RBdXRoZW50aWNhdGlvblNlcnZlciIsImlhdCI6MTY2MjcyODM2OCwiZXhwIjoxNjk0MjY0Mzk3LCJhdWQiOiJKV1RTZXJ2aWNlUG9zdG1hbkNsaWVudCIsInN1YiI6IkpXVFNlcnZpY2VBY2Nlc3NUb2tlbiJ9.KMRzEFusF1dlC9Bye7ReZaGI2eUVEHHBTZJ4pmYZXeA'
             }
         });
     },
-    //TODO create delete
-    DeleteSubscription: async (emailAddress, itemID) => {
-        axios.delete(`${configData.SALESEEKER_API_URL}/subscribe/delete?itemId=${itemID}`, {
+    UpdateSubscription: async (emailAddress, itemID, notificationThreshold, sites) => {
+        axios.put(`${configData.SALESEEKER_API_URL}/subscribe`, {
+            itemID, notificationThreshold, sites, email: emailAddress
+        }, {
             headers: {
-                emailAddress: emailAddress
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJKV1RBdXRoZW50aWNhdGlvblNlcnZlciIsImlhdCI6MTY2MjcyODM2OCwiZXhwIjoxNjk0MjY0Mzk3LCJhdWQiOiJKV1RTZXJ2aWNlUG9zdG1hbkNsaWVudCIsInN1YiI6IkpXVFNlcnZpY2VBY2Nlc3NUb2tlbiJ9.KMRzEFusF1dlC9Bye7ReZaGI2eUVEHHBTZJ4pmYZXeA'
+            }
+        });
+    },    
+    DeleteSubscription: async (emailAddress, itemID) => {
+        axios.delete(`${configData.SALESEEKER_API_URL}/subscribe?itemId=${itemID}&email=${emailAddress}`, {
+            headers: {
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJKV1RBdXRoZW50aWNhdGlvblNlcnZlciIsImlhdCI6MTY2MjcyODM2OCwiZXhwIjoxNjk0MjY0Mzk3LCJhdWQiOiJKV1RTZXJ2aWNlUG9zdG1hbkNsaWVudCIsInN1YiI6IkpXVFNlcnZpY2VBY2Nlc3NUb2tlbiJ9.KMRzEFusF1dlC9Bye7ReZaGI2eUVEHHBTZJ4pmYZXeA'
             }
         });
     },    

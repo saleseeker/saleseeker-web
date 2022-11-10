@@ -11,17 +11,14 @@ const logo = require('./../images/radar.png');
 
 export default function Home() {
     const [subscriptions, setSubscriptions] = useState(null);
-    const [defaultSubscriptionValues, setDefaultSubscriptionValues] = useState(null);
+    const [defaultSubscriptionValues, setDefaultSubscriptionValues] = useState(SettingGateway.GetDefaultSubscriptionValues());
     const [featuredProducts, setFeaturedProducts] = useState([]);
     const [sites, setSites] = useState(null);
 
     useEffect(() => {
         (async () => {
-            const userSettings = SettingGateway.GetDefaultSubscriptionValues();
-            setDefaultSubscriptionValues(userSettings);
-            console.log("Settings", SettingGateway.GetDefaultSubscriptionValues());
-            if (userSettings)
-                setSubscriptions(await SaleSeekerGateway.GetSubscriptions());
+            if (defaultSubscriptionValues)
+                setSubscriptions(await SaleSeekerGateway.GetSubscriptions(defaultSubscriptionValues.emailAddress));
             setSites(await SaleSeekerGateway.GetSites());
             setFeaturedProducts(await SaleSeekerGateway.GetItems());
           })();

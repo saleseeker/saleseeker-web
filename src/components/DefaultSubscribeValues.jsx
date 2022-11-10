@@ -20,8 +20,8 @@ const DefaultSubscribeValues = ({ sites, defaultSubscriptionValues, setDefaultSu
     const getSiteIDArray = (sites) => {
         if (sites === '')
             return [];
-        else if (sites.length == allSiteIDs.length)
-            return null;
+        // else if (sites.length == allSiteIDs.length)
+        //     return null;
         return sites;
     }
 

@@ -8,7 +8,7 @@ import SettingGateway from '../gateways/SettingGateway';
 const Subscribe = ({ item, sites, subscriptions }) => {
     const getSite = (id) => sites.find(s => s.id == id);
     const subscription = subscriptions.filter(s => s.itemId == item.id);
-    const [alertThreshold, setAlertThreshold] = useState(subscription && subscription.length > 0 ? subscription[0].notificationThreshold : 10);
+    const [alertThreshold, setAlertThreshold] = useState(subscription && subscription.length > 0 && subscription[0].NotificationThreshold ? subscription[0].NotificationThreshold : 10);
     const [subscriptionSites, setSubscriptionSites] = useState(subscription && subscription.length > 0 ? subscription.map(s => s.siteId) : null);
     const [subscribed, setSubscribed] = useState(subscription && subscription.length > 0);
     const siteIDs = sites.map(s => s.id);
@@ -17,36 +17,43 @@ const Subscribe = ({ item, sites, subscriptions }) => {
         setAlertThreshold(e.target.value);
 
         if (subscribed)
-            SaveSubscription();
+            SaveSubscription(subscribed, e.target.value, subscriptionSites, false);
     }
 
     const handleSitesChange = (e) => {
-        setSubscriptionSites(getSiteIDArray(e.target.value));
+        var subscribedSites = getSiteIDArray(e.target.value);
+        setSubscriptionSites(subscribedSites);
         
         if (subscribed)
-            SaveSubscription();
+            SaveSubscription(subscribed,alertThreshold, subscribedSites, false);
     }
 
     const handleSubscriptionToggle = (e) => {
-        setSubscribed(e.target.value);
+        setSubscribed(e.target.checked);
 
-        SaveSubscription();
+        SaveSubscription(e.target.checked, alertThreshold, subscriptionSites, true);
     };
 
-    const SaveSubscription = () => {
+    const SaveSubscription = (subscribed, alertThreshold,subscriptionSites, isNew) => {
 
         var defaultSubscriptionValues = SettingGateway.GetDefaultSubscriptionValues();
+        
         if (subscribed)
-            SaleSeekerGateway.SaveSubscription(defaultSubscriptionValues.emailAddress, item.id, alertThreshold, subscriptionSites);
+        {
+            if (isNew)
+                SaleSeekerGateway.CreateSubscription(defaultSubscriptionValues.emailAddress, item.id, alertThreshold, subscriptionSites);
+            else
+                SaleSeekerGateway.UpdateSubscription(defaultSubscriptionValues.emailAddress, item.id, alertThreshold, subscriptionSites);
+        }
         else
-            SaleSeekerGateway.DeleteSubscription(defaultSubscriptionValues.emailAddress, item.itemId);
+            SaleSeekerGateway.DeleteSubscription(defaultSubscriptionValues.emailAddress, item.id);
     };
 
     const getSiteIDArray = (sites) => {
         if (sites === '')
             return [];
-        else if (sites.length == siteIDs.length)
-            return null;
+        // else if (sites.length == siteIDs.length)
+        //     return null;
         return sites;
     }
 
@@ -111,7 +118,7 @@ const Subscribe = ({ item, sites, subscriptions }) => {
                                 </Box>
                             </Box>
                             <Box sx={{ textAlign: 'right', width: '100%', marginRight: '40px', marginTop: '60px' }}>
-                                <Switch checked={subscription != null && subscription.length > 0} onChange={handleSubscriptionToggle} />
+                                <Switch checked={subscribed} onChange={handleSubscriptionToggle} />
                             </Box>
                         </Box>
                     </Grid>
