@@ -5,11 +5,12 @@ import Item from '../components/Item';
 import SettingGateway from '../gateways/SettingGateway';
 import SaleSeekerGateway from '../gateways/SaleSeekerGateway';
 import Footer from './../components/Footer';
+import { ContentPasteSearchOutlined } from '@mui/icons-material';
 
 export default function Browse() {
 
     const [catalogueItems, setCatalogueItems] = useState(null);
-    const [filteredItems, setFilteredItems] = useState(null);
+    const [filteredItems, setFilteredItems] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [paginationIndex, setPaginationIndex] = useState(1);
     const [pageCount, setPageCount] = useState(1);
@@ -33,14 +34,11 @@ export default function Browse() {
 
     const filterItems = () => {
         if (searchQuery == "" || searchQuery.length == 0){
-            setFilteredItems(catalogueItems.sort(getSortFunction()));
             return;
         }
-        const filteredItems = catalogueItems
-        .filter(item => { 
+        const filteredItems = catalogueItems.filter(item => { 
             return item.name.toLowerCase().includes(searchQuery.toLowerCase()); 
-        })
-        .sort(getSortFunction());
+        });
         setFilteredItems(filteredItems);
     }
 
@@ -60,19 +58,40 @@ export default function Browse() {
         return Math.ceil(itemCount / 12);
     }
 
-    const getSortFunction = () => {
-        const sortFunction = (a, b) => {
-            if (1 === 1){
-                return a[sort].toLowerCase() > b[sort].toLowerCase() ? 1 : 0;
-            }
-            return a[sort].toLowerCase() > b[sort].toLowerCase() ? 1 : 0;
+    const calculateCataloguePageStartIndex = () => {
+        return (paginationIndex-1) * 12;
+    }
+    
+    const calculateCataloguePageEndIndex = () => {
+        return ((paginationIndex-1) * 12) + 12;
+    }
+
+    const getSortedList = () => {
+        if (sort === 'name'){
+            return filteredItems.sort((a, b) => {
+                let fa = a[sort].toLowerCase(),
+                    fb = b[sort].toLowerCase();
+
+                if (fa < fb) {
+                    return -1;
+                }
+                if (fa > fb) {
+                    return 1;
+                }
+                return 0;
+            });
         }
-        return sortFunction;
+        else {
+            return filteredItems.sort((a, b) => {
+                return a[sort] - b[sort];
+            });
+        }
+        
     }
 
     return (
         <Box className="page">
-            <Box sx={{ paddingLeft: 10, paddingRight: 10 }}>
+            <Box sx={{ paddingLeft: 30, paddingRight: 30 }}>
                 <Typography variant="h4">Browse</Typography>
                 <Box
                     sx={{
@@ -95,7 +114,7 @@ export default function Browse() {
                         }}
                     />
                     <Button 
-                        color="primary" 
+                        color="secondary" 
                         variant="outlined"
                         onClick={filterItems}>
                             Search
@@ -121,9 +140,7 @@ export default function Browse() {
                         size='small'
                     >
                         <MenuItem value="name">Alphabetical (A-Z)</MenuItem>
-                        <MenuItem value="nameDesc">Alphabetical (Z-A)</MenuItem>
-                        <MenuItem value="price">Price (Low-High)</MenuItem>
-                        <MenuItem value="priceDesc">Price (High-Low)</MenuItem>
+                        <MenuItem value="avePrice">Price (Low-High)</MenuItem>
                     </Select>
                 </Box>
                 <Box
@@ -131,14 +148,15 @@ export default function Browse() {
                         display: 'flex',
                         flexWrap: 'wrap',
                         justifyContent: 'left',
-                        marginTop: 3
+                        marginTop: 3,
                     }} 
                     >
-                    {filteredItems?.map((item,index)=>{
+                    {getSortedList().sort().slice(calculateCataloguePageStartIndex(), calculateCataloguePageEndIndex()).map((item,index)=>{
                         return (
                         <Box 
                             sx={{
-                                p: 0.5
+                                p: 0.5, 
+                                flex: 1,
                             }} 
                             key={item.name}>
                             { sites && <Item item={item} sites={sites} subscriptions={subscriptions} defaultSubscriptionValues={defaultSubscriptionValues}/>}
@@ -146,6 +164,7 @@ export default function Browse() {
                         )
                     })}
                 </Box>
+                <br />
                 <Box sx={{display:'flex', justifyContent: 'center', marginTop: 3, marginBottom: 3}}>
                     <Pagination count={pageCount} page={paginationIndex} onChange={handlePageChange}></Pagination>
                 </Box>

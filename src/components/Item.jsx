@@ -12,7 +12,7 @@ const renderPrice = (item, sites, minSiteItem) => {
   return onSale ?
     (<Fragment>
       <Box sx={{ display: { display: 'flex' } }}>
-        <Typography sx={{ fontSize: '14px', color: 'red' }}>{formatCurrency(minSiteItem.price)}</Typography>
+        <Typography sx={{ fontSize: '14px', color: 'red', fontWeight: 'bold' }}>{formatCurrency(minSiteItem.price)}</Typography>
         <Typography sx={{ fontSize: '14px', textDecoration: 'line-through', marginLeft: '10px' }}>{formatCurrency(item.avePrice)}</Typography>
       </Box>
       <Box sx={{ display: { display: 'flex' } }}>
@@ -23,7 +23,7 @@ const renderPrice = (item, sites, minSiteItem) => {
       </Box>
     </Fragment>) :
     (<Fragment>
-      <Typography sx={{ fontSize: '14px' }}>{formatCurrency(minSiteItem.price)}</Typography>
+      <Typography sx={{ fontSize: '14px', fontWeight: 'bold' }}>{formatCurrency(minSiteItem.price)}</Typography>
       <Box sx={{ display: { display: 'flex' } }}>
         <Typography sx={{ fontSize: '12px' }}>at {site.name}</Typography>
       </Box>
@@ -33,13 +33,15 @@ const renderPrice = (item, sites, minSiteItem) => {
 const Item = ({ item, sites, subscriptions, defaultSubscriptionValues }) => {
   const minSiteItem = minBy(item.siteItems, si => si.price);
   return (
-    <Box sx={{ height: 350, maxWidth: 300, boxShadow: "rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px", borderRadius: 1 }}>
-      <Box sx={{padding:'0px 12px'}}>
-        <Box sx={{ textAlign: 'center' }}>
-          <img src={item.imageUrl} alt={item.name} style={{ maxHeight: "200px" }} />
+    <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: 375, padding:'10px 12px', boxShadow: "rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px", borderRadius: 1 }}>
+      <Box> 
+        <Box sx={{ textAlign: 'center', flex: 1 }}>
+          <img src={item.imageUrl} alt={item.name} style={{ maxHeight: "200px", alignSelf: 'center' }} />
         </Box>
-        <Typography sx={{ fontSize: '18px' }}>{item.name}</Typography>
-        {renderPrice(item, sites, minSiteItem)}
+        <Typography sx={{ fontSize: '18px', marginTop: 2 }}>{item.name}</Typography>
+          {renderPrice(item, sites, minSiteItem)}
+      </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
         <Box sx={{ display: { display: 'flex', marginTop: '5px' } }}>
           <Button sx={{ backgroundColor: '#D9D9D9', minWidth: '50px' }} href={minSiteItem?.url}><img src={require('../images/cart_shopping_icon.png')} alt="Buy" style={{ width: '20px' }} /></Button>
           <SubscribeButton item={item} sites={sites} subscriptions={subscriptions} defaultSubscriptionValues={defaultSubscriptionValues} />

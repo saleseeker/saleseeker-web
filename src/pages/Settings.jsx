@@ -30,7 +30,7 @@ const Settings = () => {
                 <Box sx={{ marginTop: '20px' }}>
                     {defaultSubscriptionValues && <DefaultSubscribeValues sites={sites} defaultSubscriptionValues={defaultSubscriptionValues} setDefaultSubscriptionValues={setDefaultSubscriptionValues} />} 
                 </Box>
-                <Button type="submit" variant="contained" sx={{ marginTop: '10px' }}>Save</Button>
+                <Button type="submit" variant="contained" sx={{ marginTop: '10px' }} color="secondary">Save</Button>
             </form>
         </Container>
     );

@@ -55,7 +55,7 @@ const Subscriptions = () => {
                         onChange={handleEmailChange}
                     />
                 </Stack>
-                <Button type="submit" onClick={handleSave} variant="contained" sx={{ marginTop: '10px' }}>View Subscriptions</Button>
+                <Button type="submit" onClick={handleSave} variant="contained" sx={{ marginTop: '10px' }} color="secondary">View Subscriptions</Button>
             </form>
         )
     }
