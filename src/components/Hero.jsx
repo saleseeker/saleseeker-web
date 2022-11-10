@@ -15,8 +15,8 @@ const Hero = () => {
     return (
         <Box id="home-hero">
             <Box id="home-hero-text-content-container">
-                <Typography variant="h4" sx={{ fontWeight: "bold" }}>Have no fear, we'll find you cheap beer!</Typography>
-                <Typography>Welcome to SaleSeeker! Your one stop for the hottest deals online.</Typography>
+                <Typography variant="h3" sx={{ fontWeight: "bold" }}>Have no fear, we'll find you cheap beer!</Typography>
+                <Typography variant="body1">Welcome to SaleSeeker! Your one stop for the hottest deals online.</Typography>
                 <Button onClick={navigateToCatalogue} variant="contained" color="secondary" sx={{
                     marginTop: 1,
                 }}>Seek Now</Button>

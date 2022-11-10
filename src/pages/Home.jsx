@@ -58,7 +58,6 @@ export default function Home() {
                     })}
                     </Box>
                 </Box>
-                <br/>
                 <Typography variant="h5" sx={{ fontWeight: "bold", marginBottom: 2 }}>Categories</Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', height: '150px', marginBottom: '20px', gap: '20px' }}>
                     <Box id="beer-category-card" className="category-card" onClick={navigateToBrowsePage}>
@@ -92,7 +91,6 @@ export default function Home() {
                     </Box>
                 </Box>
             </Box>
-            <br />
             <Footer />
         </Box>
     );

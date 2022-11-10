@@ -17,7 +17,7 @@ const Footer = () => {
             <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: 5, borderBottom: 1, borderBottomColor: "white" }}> 
                 <Box sx={{ flex: 2, paddingLeft: 2 }}>
                     <img id='footer-logo' src={logo} />
-                    <Typography className="footer" sx={{ marginLeft: 3 }} variant="h6">SaleSeeker</Typography>
+                    <Typography className="footer" sx={{ marginLeft: 4 }} variant="h6">SaleSeeker</Typography>
                 </Box>
                 <Box sx={{ flex: 1.5 }}>
                     <List>
