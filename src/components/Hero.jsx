@@ -17,9 +17,8 @@ const Hero = () => {
             <Box id="home-hero-text-content-container">
                 <Typography variant="h4" sx={{ fontWeight: "bold" }}>Have no fear, we'll find you cheap beer!</Typography>
                 <Typography>Welcome to SaleSeeker! Your one stop for the hottest deals online.</Typography>
-                <Button onClick={navigateToCatalogue} variant="contained" sx={{
+                <Button onClick={navigateToCatalogue} variant="contained" color="secondary" sx={{
                     marginTop: 1,
-                    backgroundColor: "purple"
                 }}>Seek Now</Button>
             </Box>
             <Box id="home-hero-graphic-container" sx={{ marginRight: 5 }}>

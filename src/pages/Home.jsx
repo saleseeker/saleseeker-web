@@ -19,7 +19,6 @@ export default function Home() {
         (async () => {
             const userSettings = SettingGateway.GetDefaultSubscriptionValues();
             setDefaultSubscriptionValues(userSettings);
-            console.log("Settings", SettingGateway.GetDefaultSubscriptionValues());
             if (userSettings)
                 setSubscriptions(await SaleSeekerGateway.GetSubscriptions());
             setSites(await SaleSeekerGateway.GetSites());
@@ -31,14 +30,15 @@ export default function Home() {
         <Box>
             <Hero/>
            <Box sx={{ padding: 5 }}>
+            <Box>
             <Typography variant="h5" sx={{ fontWeight: "bold", marginBottom: 2 }}>Latest Products</Typography>
                 <Box className="carousel">
-                {featuredProducts.map((item,index)=>{
+                {featuredProducts.slice(7, 13).map((item,index)=>{
                     return (
                     <Box 
                         sx={{
                             p: 1
-                        }} 
+                        }}
                         key={item.name}>
                         { sites && <Item item={item} sites={sites} subscriptions={subscriptions} defaultSubscriptionValues={defaultSubscriptionValues}/>}
                     </Box>
@@ -46,10 +46,9 @@ export default function Home() {
                 })}
                 </Box>
            </Box>
-            
-            {/* <br/> */}
-            {/* <Typography variant="h5" sx={{ marginTop: "20px" }}>Categories</Typography> */}
-            {/* <Box sx={{ display: 'flex', justifyContent: 'space-between', height: '125px', marginBottom: '20px', gap: '20px' }}>
+            <br/>
+            <Typography variant="h5" sx={{ fontWeight: "bold", marginBottom: 2 }}>Categories</Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', height: '125px', marginBottom: '20px', gap: '20px' }}>
                 <Box className="category-card">
                     <Typography variant="h5">Beers</Typography>
                 </Box>
@@ -62,7 +61,7 @@ export default function Home() {
                 <Box className="category-card">
                     <Typography variant="caption">Ciders</Typography>
                 </Box>
-            </Box> */}
+            </Box>
             {/* <br /> */}
             {/* <Typography variant="h5">My Subscriptions</Typography> */}
             {/* <Box className="carousel">
@@ -78,6 +77,7 @@ export default function Home() {
                     )
                 })}
             </Box> */}
+            </Box>
             <br />
             <Footer />
         </Box>

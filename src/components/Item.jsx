@@ -33,7 +33,7 @@ const renderPrice = (item, sites, minSiteItem) => {
 const Item = ({ item, sites, subscriptions, defaultSubscriptionValues }) => {
   const minSiteItem = minBy(item.siteItems, si => si.price);
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: 375, padding:'10px 12px', boxShadow: "rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px", borderRadius: 1 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: 375, padding:'10px 12px', boxShadow: "rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px", borderRadius: 1 }}>
       <Box> 
         <Box sx={{ textAlign: 'center', flex: 1 }}>
           <img src={item.imageUrl} alt={item.name} style={{ maxHeight: "200px", alignSelf: 'center' }} />
