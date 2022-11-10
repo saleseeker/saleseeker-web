@@ -69,7 +69,7 @@ const Footer = () => {
                             <img className="social-icon" src={twitter} />
                         </a>
                     </Box>
-                    <Typography variant="h5" sx={{ color: 'white', fontWeight: 'bold' }}>Connect with Us</Typography>
+                    <Typography variant="h5" sx={{ color: 'white' }}>Connect with Us</Typography>
                 </Box>
             </Box>
             <Typography sx={{ paddingTop: 1, paddingBottom: 1, marginLeft: 2 }} variant="caption" className="footer">© Copyright SaleSeeker 2022</Typography>

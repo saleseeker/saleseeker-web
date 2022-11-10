@@ -143,19 +143,6 @@ export default function Browse() {
                         <MenuItem value="name">Alphabetical (A-Z)</MenuItem>
                         <MenuItem value="avePrice">Price (Low-High)</MenuItem>
                     </Select>
-                    <Typography
-                        sx={{ paddingLeft: 3, paddingRight: 1 }}>
-                        Category: 
-                    </Typography>
-                    <Select
-                        labelId="demo-simple-select-label"
-                        value={"Beer"}
-                        label="Category"
-                        placeholder='Beer'
-                        size='small'
-                    >
-                        <MenuItem value="category_beer">Beer</MenuItem>
-                    </Select>
                 </Box>
                 <Box
                     sx={{

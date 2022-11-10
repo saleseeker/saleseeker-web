@@ -18,6 +18,39 @@
     background-blend-mode: lighten;
 }
 
+#beer-category-card {
+    background-image: url('./assets/images/Beer.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-blend-mode: lighten;
+    opacity: 0.8;
+    background-position: 90% 30%;
+}
+
+#wine-category-card {
+    background-image: url('./assets/images/Wine.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-blend-mode: lighten;
+    opacity: 0.8;
+}
+
+#whiskey-category-card {
+    background-image: url('./assets/images/Whiskey.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-blend-mode: lighten;
+    opacity: 0.8;
+}
+
+#champagne-category-card {
+    background-image: url('./assets/images/Champagne.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-blend-mode: lighten;
+    opacity: 0.8;
+}
+
 #footer-logo {
     width: 100px;
     height: 100px;
@@ -99,9 +132,6 @@
     align-items: center;
     color: white;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-    background: #00B4DB;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #0083B0, #00B4DB);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #0083B0, #00B4DB); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .page {
