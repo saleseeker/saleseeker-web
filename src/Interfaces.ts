@@ -1,4 +1,5 @@
 export interface IItem {
+    id:number,
     name:string,
     imageUrl:string,
     avePrice:number,
@@ -20,4 +21,16 @@ export interface ISite {
     name:string,
     url:string,
     logo:string
+}
+
+export interface IItemSubscription {
+    itemID:number,
+    alertThreshold:number,
+    siteIDs:number[]
+}
+
+export interface ISubscriptionValues{
+    emailAddress:string,
+    alertThreshold:number,
+    siteIDs:number[]
 }
