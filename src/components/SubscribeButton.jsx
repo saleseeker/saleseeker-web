@@ -14,14 +14,18 @@ const SubscribeButton = ({ item, sites, subscriptions, defaultSubscriptionValues
 
     useEffect(() => {
         setSubscriptionValues(defaultSubscriptionValues);
-        var subscription = (subscriptions != null) ? subscriptions.find(s => s.itemId == item.id) : {};
-        setSubscribed(subscription);
+        var subscription = (subscriptions != null) ? subscriptions.find(s => s.itemId == item.id) : null;
+        setSubscribed(subscription != null);
     }, [defaultSubscriptionValues]);
 
     const handleClick = async (subscription) => {
 
+        console.log(subscription)
+        console.log(defaultSubscriptionValues.emailAddress == '')
         if (!subscription && defaultSubscriptionValues.emailAddress == '')
+        {
             setOpen(true);
+        }
         else
         {
             if (subscribed)                
@@ -51,8 +55,8 @@ const SubscribeButton = ({ item, sites, subscriptions, defaultSubscriptionValues
         setOpen(false);
     };
 
-    const subscription = (itemSubscriptions != null) ? itemSubscriptions.find(s => s.itemId == item.id) : {};
-
+    const subscription = (itemSubscriptions != null) ? itemSubscriptions.find(s => s.itemId == item.id) : null;
+    
     return (
         <Fragment>
             <ButtonGroup variant='text' sx={{ backgroundColor: '#D9D9D9', width: '100%', marginLeft: '5px', minWidth: '175px' }}>
